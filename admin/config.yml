@@ -11,10 +11,10 @@ backend:
   name: github
   repo: MagisterGudvin/pixelorcs        # ← замените на ваш репозиторий
   branch: main
-  base_url: https://sveltia-cms-auth.netlify.app  # бесплатный OAuth-прокси
+  # base_url: https://sveltia-cms-auth.netlify.app  # бесплатный OAuth-прокси
   # Если хотите PKCE без внешнего прокси, раскомментируйте:
-  # auth_type: pkce
-  # app_id: ваш-github-oauth-app-client-id
+  auth_type: pkce
+  app_id: Ov23liXt1NzKgldjAvRK
 
 # Публикация
 publish_mode: editorial_workflow       # черновики → на ревью → публикация

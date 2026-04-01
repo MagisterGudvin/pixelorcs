@@ -1,0 +1,71 @@
+# ============================================================
+# GitHub Actions — сборка и деплой Jekyll на GitHub Pages
+# ============================================================
+# Для работы:
+# 1. Settings → Pages → Source: GitHub Actions
+# 2. Убедитесь, что ветка main существует
+# ============================================================
+
+name: Jekyll — сборка и деплой
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+  # Позволяет запускать вручную из вкладки Actions
+  workflow_dispatch:
+
+# Права для деплоя на Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Только один деплой одновременно
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+
+  # ── Сборка ──
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Клонирование репозитория
+        uses: actions/checkout@v4
+
+      - name: Установка Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true  # кэширует gem'ы между запусками
+
+      - name: Настройка Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Сборка Jekyll
+        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+        env:
+          JEKYLL_ENV: production
+
+      - name: Загрузка артефакта
+        uses: actions/upload-pages-artifact@v3
+
+  # ── Деплой ──
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+
+      - name: Деплой на GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

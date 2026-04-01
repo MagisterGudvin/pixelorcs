@@ -1,0 +1,194 @@
+# ============================================================
+# Decap CMS — конфигурация для GitHub Pages
+# ============================================================
+# ВАЖНО: перед использованием замените значения ниже:
+#   1. repo  → ваш GitHub-репозиторий (username/repo-name)
+#   2. site_domain → ваш домен GitHub Pages
+#   3. base_url → URL вашего OAuth-приложения (см. README)
+# ============================================================
+
+backend:
+  name: github
+  repo: yourusername/pixelorcs        # ← замените на ваш репозиторий
+  branch: main
+  base_url: https://sveltia-cms-auth.netlify.app  # бесплатный OAuth-прокси
+  # Если хотите PKCE без внешнего прокси, раскомментируйте:
+  # auth_type: pkce
+  # app_id: ваш-github-oauth-app-client-id
+
+# Публикация
+publish_mode: editorial_workflow       # черновики → на ревью → публикация
+site_url: https://yourusername.github.io/pixelorcs
+display_url: https://yourusername.github.io/pixelorcs
+
+# Медиа
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+# Локализация
+locale: "ru"
+
+# Превью в реальном времени
+show_preview_links: true
+
+# Слаги на транслите
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
+# ============================================================
+# Коллекции
+# ============================================================
+collections:
+
+  # --- Статьи (посты) ---
+  - name: "posts"
+    label: "Статьи"
+    label_singular: "Статью"
+    folder: "_posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sortable_fields: ["date", "title", "category"]
+    view_filters:
+      - label: "Аналитика"
+        field: category
+        pattern: "Аналитика"
+      - label: "Обзоры"
+        field: category
+        pattern: "Обзоры"
+      - label: "Превью"
+        field: category
+        pattern: "Превью"
+      - label: "Индустрия"
+        field: category
+        pattern: "Индустрия"
+      - label: "Гейм-дизайн"
+        field: category
+        pattern: "Гейм-дизайн"
+      - label: "Культура"
+        field: category
+        pattern: "Культура"
+    summary: "{{title}} — {{category}} · {{year}}-{{month}}-{{day}}"
+    fields:
+      - label: "Макет"
+        name: "layout"
+        widget: "hidden"
+        default: "post"
+
+      - label: "Заголовок"
+        name: "title"
+        widget: "string"
+        hint: "Основной заголовок статьи"
+
+      - label: "Описание (SEO)"
+        name: "description"
+        widget: "string"
+        hint: "Краткое описание для поисковиков и соцсетей (до 160 символов)"
+        pattern: ['.{0,160}', "Не больше 160 символов"]
+
+      - label: "Дата публикации"
+        name: "date"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        format: "YYYY-MM-DD"
+
+      - label: "Категория"
+        name: "category"
+        widget: "select"
+        options:
+          - "Аналитика"
+          - "Обзоры"
+          - "Превью"
+          - "Индустрия"
+          - "Гейм-дизайн"
+          - "Культура"
+          - "Интервью"
+          - "Гайды"
+
+      - label: "Цвет тега"
+        name: "tag_color"
+        widget: "select"
+        required: false
+        default: ""
+        options:
+          - label: "Зелёный (по умолчанию)"
+            value: ""
+          - label: "Красный"
+            value: "red"
+        hint: "Цвет плашки категории на карточке"
+
+      - label: "Время чтения (мин)"
+        name: "read_time"
+        widget: "number"
+        value_type: "int"
+        min: 1
+        max: 60
+        default: 7
+
+      - label: "Обложка (OG-изображение)"
+        name: "image"
+        widget: "image"
+        required: false
+        hint: "Рекомендуемый размер: 1200×630 px"
+        media_folder: "/assets/uploads"
+
+      - label: "Текст статьи"
+        name: "body"
+        widget: "markdown"
+        hint: "Поддерживаются заголовки, списки, цитаты, изображения"
+
+  # --- Страницы ---
+  - name: "pages"
+    label: "Страницы"
+    label_singular: "Страницу"
+    files:
+      - label: "О проекте"
+        name: "about"
+        file: "about.md"
+        fields:
+          - label: "Макет"
+            name: "layout"
+            widget: "hidden"
+            default: "default"
+          - label: "Заголовок"
+            name: "title"
+            widget: "string"
+          - label: "Описание (SEO)"
+            name: "description"
+            widget: "string"
+          - label: "Текст"
+            name: "body"
+            widget: "markdown"
+
+  # --- Настройки сайта ---
+  - name: "settings"
+    label: "Настройки"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - label: "Общие настройки"
+        name: "general"
+        file: "_data/settings.yml"
+        fields:
+          - label: "Название сайта"
+            name: "title"
+            widget: "string"
+            default: "PIXELORCS"
+          - label: "Описание сайта"
+            name: "description"
+            widget: "text"
+          - label: "Бегущая строка"
+            name: "ticker"
+            widget: "list"
+            label_singular: "Новость"
+            fields:
+              - label: "Текст"
+                name: "text"
+                widget: "string"
+              - label: "Горячая новость"
+                name: "hot"
+                widget: "boolean"
+                default: false

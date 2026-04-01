@@ -1,0 +1,15 @@
+title: "PIXELORCS"
+description: "Независимый онлайн-журнал о видеоиграх: обзоры, аналитика игровой индустрии."
+ticker:
+  - text: "GTA VI — новый трейлер"
+    hot: true
+  - text: "Nintendo Switch 2 — старт продаж"
+    hot: false
+  - text: "Steam побил рекорд онлайна"
+    hot: true
+  - text: "Hollow Knight: Silksong — дата релиза"
+    hot: false
+  - text: "Итоги The Game Awards 2025"
+    hot: false
+  - text: "Unreal Engine 6 — анонс"
+    hot: false

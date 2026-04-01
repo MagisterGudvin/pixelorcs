@@ -1,0 +1,19 @@
+---
+layout: default
+---
+<article class="post-full" itemscope itemtype="https://schema.org/Article">
+  <header class="post-hero">
+    <div class="post-hero-inner">
+      <span class="card-tag">{{ page.category }}</span>
+      <h1 class="post-title" itemprop="headline">{{ page.title }}</h1>
+      <p class="post-excerpt" itemprop="description">{{ page.description }}</p>
+      <div class="post-meta">
+        <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%d.%m.%Y" }}</time>
+        {% if page.read_time %}<span class="read-time">{{ page.read_time }} мин</span>{% endif %}
+      </div>
+    </div>
+  </header>
+  <div class="post-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+</article>

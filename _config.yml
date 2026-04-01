@@ -1,0 +1,32 @@
+title: "PIXELORCS"
+description: "Независимый онлайн-журнал о видеоиграх: обзоры, аналитика игровой индустрии, интервью с разработчиками и гейм-дизайн."
+url: "https://yourusername.github.io"
+baseurl: "/pixelorcs"
+lang: ru
+author: PIXELORCS
+
+permalink: /:categories/:title/
+
+collections:
+  posts:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+
+twitter:
+  card: summary_large_image
+
+social:
+  name: PIXELORCS
+
+markdown: kramdown

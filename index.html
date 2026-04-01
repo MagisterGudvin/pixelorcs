@@ -1,0 +1,69 @@
+---
+layout: default
+title: "PIXELORCS — Статьи об играх и игровой индустрии"
+description: "Независимый онлайн-журнал о видеоиграх: обзоры, аналитика, интервью с разработчиками и гейм-дизайн."
+image: /assets/og-image.png
+---
+
+<section class="hero" aria-label="Главный материал">
+  <div class="fade-up">
+    <div class="hero-tag">Главное</div>
+    <h1 class="hero-title">Играем.<br><span class="hl">Анализируем.</span><br>Пишем.</h1>
+  </div>
+  <div class="fade-up delay-2">
+    <p class="hero-sub">Независимый онлайн-журнал о видеоиграх, гейм-дизайне и культуре вокруг них. Без рекламы, без кликбейта — только честные тексты.</p>
+  </div>
+</section>
+
+<!-- Бегущая строка — управляется из Decap CMS (Настройки → Бегущая строка) -->
+{% if site.data.settings.ticker.size > 0 %}
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker">
+    {% for item in site.data.settings.ticker %}
+      <span{% if item.hot %} class="hot"{% endif %}>{% if item.hot %}● {% endif %}{{ item.text }}</span>
+    {% endfor %}
+    {% for item in site.data.settings.ticker %}
+      <span{% if item.hot %} class="hot"{% endif %}>{% if item.hot %}● {% endif %}{{ item.text }}</span>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div class="section-label" id="articles">Свежие материалы</div>
+<section class="articles" aria-label="Статьи">
+  {% assign sorted = site.posts | sort: 'date' | reverse %}
+  {% for post in sorted %}
+  <article class="card {% if forloop.first %}featured{% endif %} fade-up delay-{{ forloop.index }}">
+    <a href="{{ post.url | relative_url }}">
+      {% if post.image %}
+        <img class="card-img" src="{{ post.image | relative_url }}" alt="{{ post.title }}" loading="lazy">
+      {% else %}
+        <div class="card-img img-p{{ forloop.index | modulo: 5 | plus: 1 }}"></div>
+      {% endif %}
+      <div class="card-body">
+        <div class="card-tag {% if post.tag_color == 'red' %}red{% endif %}">{{ post.category }}</div>
+        <h2 class="card-title">{{ post.title }}</h2>
+        <p class="card-excerpt">{{ post.description | default: post.excerpt | strip_html | truncatewords: 25 }}</p>
+        <div class="card-meta">
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%d.%m.%Y" }}</time>
+          {% if post.read_time %}<span class="read-time">{{ post.read_time }} мин</span>{% endif %}
+        </div>
+      </div>
+    </a>
+  </article>
+  {% endfor %}
+</section>
+
+<div class="section-label" id="about">О проекте</div>
+<section class="about fade-up delay-2">
+  <div>
+    <h2 class="about-title">Журнал для тех, кто играет осознанно</h2>
+    <p>PIXELORCS — это независимое медиа о видеоиграх. Мы пишем длинные тексты, потому что верим: игры заслуживают такого же серьёзного разговора, как кино и литература.</p>
+    <p>Никакой рекламы, никаких проплаченных обзоров. Только честный взгляд на индустрию, которую мы любим.</p>
+  </div>
+  <div class="about-stats">
+    <div class="stat"><div class="stat-num">200+</div><div class="stat-label">Статей</div></div>
+    <div class="stat"><div class="stat-num">15K</div><div class="stat-label">Читателей</div></div>
+    <div class="stat"><div class="stat-num">0</div><div class="stat-label">Рекламы</div></div>
+  </div>
+</section>

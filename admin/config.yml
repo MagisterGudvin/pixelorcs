@@ -13,7 +13,7 @@ backend:
   name: github
   repo: MagisterGudvin/pixelorcs          # ← замените на ваш репозиторий
   branch: main
-  base_url: https://your-worker.workers.dev  # ← URL Cloudflare Worker (см. README)
+  base_url: https://pixelorcs-auth.michaelgublin.workers.dev/  # ← URL Cloudflare Worker (см. README)
 
 # Для локальной разработки: запустите `npx @sveltia/cms-proxy` и раскомментируйте:
 # local_backend: true

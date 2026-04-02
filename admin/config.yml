@@ -20,8 +20,8 @@ backend:
 
 # Публикация
 publish_mode: editorial_workflow        # черновики → на ревью → публикация
-site_url: https://MagisterGudvin.github.io/pixelorcs
-display_url: https://MagisterGudvin.github.io/pixelorcs
+site_url: https://4rks.ru
+display_url: https://4rks.ru
 
 # Медиа
 media_folder: "assets/uploads"

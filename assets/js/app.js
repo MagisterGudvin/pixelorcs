@@ -1,4 +1,4 @@
-/* ===== PIXELORCS — Search, Filter, Mobile Menu ===== */
+/* ===== 4RKS — Search, Filter, Mobile Menu ===== */
 
 let searchIndex = null;
 let currentFilter = '';

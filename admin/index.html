@@ -6,6 +6,64 @@
   <title>4RCS — Панель управления</title>
   <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
   <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js" type="module"></script>
+  <script>
+    // Транслитерация кириллицы → латиница для авто-заполнения slug
+    const translit = {
+      'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo','ж':'zh',
+      'з':'z','и':'i','й':'y','к':'k','л':'l','м':'m','н':'n','о':'o',
+      'п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'kh','ц':'ts',
+      'ч':'ch','ш':'sh','щ':'shch','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya',
+      ' ':'-'
+    };
+
+    function transliterate(str) {
+      return str.toLowerCase().split('').map(function(c) {
+        return translit[c] !== undefined ? translit[c] : c;
+      }).join('').replace(/[^a-z0-9-]+/g, '-').replace(/--+/g, '-').replace(/^-|-$/g, '');
+    }
+
+    // Наблюдаем за DOM — при вводе названия категории заполняем slug
+    document.addEventListener('input', function(e) {
+      var input = e.target;
+      if (!input || input.tagName !== 'INPUT') return;
+
+      // Ищем поле "name" внутри списка категорий
+      var wrapper = input.closest('[data-field-name="name"]')
+        || input.closest('[data-key="name"]');
+      if (!wrapper) {
+        // Попробуем найти по label
+        var label = input.closest('div')?.querySelector('label');
+        if (!label || !(label.textContent || '').match(/Название/i)) return;
+        wrapper = input.closest('div')?.parentElement;
+      }
+      if (!wrapper) return;
+
+      // Найти соседнее поле slug
+      var parent = wrapper.parentElement;
+      if (!parent) return;
+      var slugField = parent.querySelector('[data-field-name="slug"] input')
+        || parent.querySelector('[data-key="slug"] input');
+
+      if (!slugField) {
+        // Ищем среди соседних div-ов
+        var siblings = parent.querySelectorAll('input');
+        for (var i = 0; i < siblings.length; i++) {
+          if (siblings[i] === input) continue;
+          var sibLabel = siblings[i].closest('div')?.querySelector('label');
+          if (sibLabel && (sibLabel.textContent || '').match(/[Ss]lug/i)) {
+            slugField = siblings[i];
+            break;
+          }
+        }
+      }
+
+      if (slugField && (!slugField.value || slugField.dataset.autoFilled === 'true')) {
+        slugField.value = transliterate(input.value);
+        slugField.dataset.autoFilled = 'true';
+        slugField.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    }, true);
+  </script>
 </head>
 <body>
 </body>

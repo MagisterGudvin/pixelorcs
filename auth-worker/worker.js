@@ -1,5 +1,5 @@
 /**
- * PIXELORCS — OAuth-прокси для Sveltia/Decap CMS
+ * 4RKS — OAuth-прокси для Sveltia/Decap CMS
  *
  * Cloudflare Worker, который решает проблему CORS при авторизации
  * через GitHub OAuth на GitHub Pages.
@@ -111,7 +111,7 @@ export default {
       }
     }
 
-    return new Response('PIXELORCS OAuth Proxy is running.', {
+    return new Response('4RKS OAuth Proxy is running.', {
       headers: { 'Content-Type': 'text/plain', ...corsHeaders },
     });
   },

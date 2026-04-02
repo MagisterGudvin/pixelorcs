@@ -47,28 +47,25 @@ collections:
     view_filters:
       - label: "Аналитика"
         field: category
-        pattern: "analytics"
+        pattern: "аnalitika"
       - label: "Обзоры"
         field: category
-        pattern: "reviews"
+        pattern: "obzori"
       - label: "Превью"
         field: category
-        pattern: "previews"
+        pattern: "prevyu"
       - label: "Индустрия"
         field: category
-        pattern: "industry"
+        pattern: "industriya"
       - label: "Гейм-дизайн"
         field: category
         pattern: "game-design"
-      - label: "Культура"
-        field: category
-        pattern: "culture"
       - label: "Интервью"
         field: category
-        pattern: "interviews"
-      - label: "Гайды"
+        pattern: "intervyu"
+      - label: "Творчество"
         field: category
-        pattern: "guides"
+        pattern: "tvorchestvo"
     summary: "{{title}} — {{category}} · {{year}}-{{month}}-{{day}}"
     fields:
       - label: "Макет"

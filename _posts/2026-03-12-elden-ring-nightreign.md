@@ -2,7 +2,7 @@
 layout: post
 title: "Elden Ring: Nightreign — предварительный обзор"
 description: "Кооперативный спин-офф от FromSoftware переосмысляет формулу Souls."
-category: previews
+category: prevyu
 tag_color: red
 read_time: 8
 date: 2026-03-12

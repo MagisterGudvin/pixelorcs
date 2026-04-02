@@ -1,16 +1,12 @@
 title: 4RKS
 description: 'Независимый онлайн-журнал о видеоиграх: обзоры, аналитика игровой индустрии.'
 categories:
-  - name: Аналитика
-    slug: аnalitika
   - name: Обзоры
     slug: obzori
-  - name: Превью
-    slug: prevyu
   - name: Индустрия
     slug: industriya
-  - name: Гейм-дизайн
-    slug: game-design
+  - name: Железо
+    slug: zhelezo
   - name: Интервью
     slug: intervyu
   - name: Творчество

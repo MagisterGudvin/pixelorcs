@@ -80,4 +80,9 @@ authors:
     youtube: ''
     vk: ''
     telegram: ''
+# Доступ авторов (GitHub-логины)
+collaborators:
+  - github: ""
+    role: "Автор"
+
 footer_text: Сделано с любовью к играм.

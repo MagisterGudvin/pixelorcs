@@ -1,0 +1,175 @@
+# ============================================================
+# Sveltia CMS — панель автора (только статьи)
+# ============================================================
+# Авторы могут создавать и редактировать статьи.
+# Для доступа к настройкам используйте /admin/
+# ============================================================
+
+backend:
+  name: github
+  repo: MagisterGudvin/pixelorcs
+  branch: main
+  base_url: https://pixelorcs-auth.michaelgublin.workers.dev/
+
+# Публикация
+publish_mode: editorial_workflow
+site_url: https://MagisterGudvin.github.io/pixelorcs
+display_url: https://MagisterGudvin.github.io/pixelorcs
+
+# Медиа
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+# Локализация
+locale: "ru"
+
+# Превью
+show_preview_links: true
+
+# Слаги
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
+# ============================================================
+# Коллекции — только статьи
+# ============================================================
+collections:
+
+  - name: "posts"
+    label: "Статьи"
+    label_singular: "Статью"
+    folder: "_posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sortable_fields: ["date", "title", "category"]
+    view_filters:
+      - label: "Аналитика"
+        field: category
+        pattern: "analytics"
+      - label: "Обзоры"
+        field: category
+        pattern: "reviews"
+      - label: "Превью"
+        field: category
+        pattern: "previews"
+      - label: "Индустрия"
+        field: category
+        pattern: "industry"
+      - label: "Гейм-дизайн"
+        field: category
+        pattern: "game-design"
+      - label: "Культура"
+        field: category
+        pattern: "culture"
+      - label: "Интервью"
+        field: category
+        pattern: "interviews"
+      - label: "Гайды"
+        field: category
+        pattern: "guides"
+    summary: "{{title}} — {{category}} · {{year}}-{{month}}-{{day}}"
+    fields:
+      - label: "Макет"
+        name: "layout"
+        widget: "hidden"
+        default: "post"
+
+      - label: "Заголовок"
+        name: "title"
+        widget: "string"
+        hint: "Основной заголовок статьи"
+
+      - label: "Описание (SEO)"
+        name: "description"
+        widget: "string"
+        hint: "Краткое описание для поисковиков и соцсетей (до 160 символов)"
+        pattern: ['.{0,160}', "Не больше 160 символов"]
+
+      - label: "Дата публикации"
+        name: "date"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        format: "YYYY-MM-DD"
+
+      - label: "Автор"
+        name: "author"
+        widget: "relation"
+        collection: "settings"
+        file: "general"
+        search_fields: ["authors.*.name"]
+        value_field: "authors.*.name"
+        display_fields: ["authors.*.name"]
+        hint: "Выберите автора из списка"
+
+      - label: "Категория"
+        name: "category"
+        widget: "relation"
+        collection: "settings"
+        file: "general"
+        search_fields: ["categories.*.name"]
+        value_field: "categories.*.slug"
+        display_fields: ["categories.*.name"]
+
+      - label: "Цвет тега"
+        name: "tag_color"
+        widget: "select"
+        required: false
+        default: ""
+        options:
+          - label: "Зелёный (по умолчанию)"
+            value: ""
+          - label: "Красный"
+            value: "red"
+        hint: "Цвет плашки категории на карточке"
+
+      - label: "Время чтения (мин)"
+        name: "read_time"
+        widget: "number"
+        value_type: "int"
+        min: 1
+        max: 60
+        default: 7
+
+      - label: "Обложка (OG-изображение)"
+        name: "image"
+        widget: "image"
+        required: false
+        hint: "Рекомендуемый размер: 1200×630 px"
+        media_folder: "/assets/uploads"
+
+      - label: "Текст статьи"
+        name: "body"
+        widget: "markdown"
+        hint: "Поддерживаются заголовки, списки, цитаты, изображения"
+
+  # Settings collection (read-only reference for relation widget)
+  - name: "settings"
+    label: "Настройки"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - label: "Общие настройки"
+        name: "general"
+        file: "_data/settings.yml"
+        fields:
+          - label: "Категории"
+            name: "categories"
+            widget: "list"
+            fields:
+              - label: "Название"
+                name: "name"
+                widget: "string"
+              - label: "Slug"
+                name: "slug"
+                widget: "string"
+          - label: "Авторы"
+            name: "authors"
+            widget: "list"
+            fields:
+              - label: "Имя"
+                name: "name"
+                widget: "string"

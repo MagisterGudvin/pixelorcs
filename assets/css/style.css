@@ -454,6 +454,63 @@ body.mobile-open .btn-burger .close-icon { display: block; }
 
 
 /* ============================
+   404
+   ============================ */
+.page-404 {
+  max-width: 600px; margin: 0 auto; padding: 80px 24px 120px;
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center;
+}
+.page-404-orc {
+  animation: float404 3s ease-in-out infinite;
+  margin-bottom: 24px;
+}
+@keyframes float404 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.page-404-code {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(5rem, 15vw, 10rem);
+  line-height: 1; letter-spacing: .04em;
+  color: var(--accent); opacity: .15;
+  margin-bottom: -20px;
+}
+.page-404-title {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  text-transform: uppercase; letter-spacing: .02em;
+  margin-bottom: 16px;
+}
+.page-404-text {
+  color: var(--gray); font-size: 1rem; line-height: 1.6;
+  max-width: 420px; margin-bottom: 32px;
+}
+.page-404-actions {
+  display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+}
+.page-404-btn {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: .8rem; text-transform: uppercase; letter-spacing: .06em;
+  padding: 12px 28px; border-radius: 6px;
+  border: 1px solid var(--border); background: none;
+  color: var(--white); cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.page-404-btn:hover {
+  color: var(--accent); border-color: var(--accent);
+  background: rgba(200,255,46,.06);
+}
+.page-404-btn.primary {
+  background: var(--accent); color: var(--black);
+  border-color: var(--accent);
+}
+.page-404-btn.primary:hover {
+  background: #b8ef20; border-color: #b8ef20;
+}
+
+
+/* ============================
    ANIMATIONS
    ============================ */
 .fade-up { opacity: 0; transform: translateY(30px); animation: fadeUp .7s ease forwards; }

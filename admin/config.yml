@@ -102,6 +102,16 @@ collections:
         time_format: false
         format: "YYYY-MM-DD"
 
+      - label: "Автор"
+        name: "author"
+        widget: "relation"
+        collection: "settings"
+        file: "general"
+        search_fields: ["authors.*.name"]
+        value_field: "authors.*.name"
+        display_fields: ["authors.*.name"]
+        hint: "Выберите автора из списка"
+
       - label: "Категория"
         name: "category"
         widget: "relation"
@@ -289,6 +299,24 @@ collections:
                 widget: "string"
                 required: false
                 hint: "Ссылка на Telegram (https://t.me/username)"
+
+          - label: "Доступ авторов"
+            name: "collaborators"
+            widget: "list"
+            label_singular: "Автора"
+            hint: "GitHub-логины пользователей с доступом к панели автора (/author/). Не забудьте добавить их как Collaborator в настройках репозитория на GitHub."
+            fields:
+              - label: "GitHub логин"
+                name: "github"
+                widget: "string"
+                hint: "Имя пользователя на GitHub (без @)"
+              - label: "Роль"
+                name: "role"
+                widget: "select"
+                default: "Автор"
+                options:
+                  - "Автор"
+                  - "Редактор"
 
           - label: "Текст в подвале"
             name: "footer_text"

@@ -1,4 +1,4 @@
-title: PIXELORCS
+title: 4ORCS
 description: 'Независимый онлайн-журнал о видеоиграх: обзоры, аналитика игровой индустрии.'
 categories:
   - name: Аналитика
@@ -80,9 +80,7 @@ authors:
     youtube: ''
     vk: ''
     telegram: ''
-# Доступ авторов (GitHub-логины)
 collaborators:
-  - github: ""
-    role: "Автор"
-
+  - github: MagisterGudvin
+    role: Автор
 footer_text: Сделано с любовью к играм.

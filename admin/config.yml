@@ -139,29 +139,6 @@ collections:
         widget: "markdown"
         hint: "Поддерживаются заголовки, списки, цитаты, изображения"
 
-  # --- Страницы ---
-  - name: "pages"
-    label: "Страницы"
-    label_singular: "Страницу"
-    files:
-      - label: "О проекте"
-        name: "about"
-        file: "about.md"
-        fields:
-          - label: "Макет"
-            name: "layout"
-            widget: "hidden"
-            default: "default"
-          - label: "Заголовок"
-            name: "title"
-            widget: "string"
-          - label: "Описание (SEO)"
-            name: "description"
-            widget: "string"
-          - label: "Текст"
-            name: "body"
-            widget: "markdown"
-
   # --- Настройки ---
   - name: "settings"
     label: "Настройки"

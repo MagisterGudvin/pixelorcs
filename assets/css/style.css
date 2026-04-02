@@ -396,6 +396,17 @@ body.mobile-open .btn-burger .close-icon { display: block; }
   text-align: center; font-size: .8rem; color: var(--gray);
   font-family: var(--font-display); letter-spacing: .04em;
 }
+.footer-links {
+  display: flex; justify-content: center; gap: 24px; margin-bottom: 16px;
+}
+.footer-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--gray); font-family: var(--font-display);
+  font-size: .75rem; text-transform: uppercase; letter-spacing: .06em;
+  transition: color .2s;
+}
+.footer-link:hover { color: var(--accent); }
+.footer-link svg { flex-shrink: 0; }
 
 
 /* ============================

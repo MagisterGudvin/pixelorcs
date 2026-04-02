@@ -1,3 +1,13 @@
 <footer class="site-footer">
+  <div class="footer-links">
+    <a href="{{ '/feed.xml' | relative_url }}" class="footer-link" aria-label="RSS-лента">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+      RSS
+    </a>
+    <a href="{{ '/sitemap.xml' | relative_url }}" class="footer-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Карта сайта
+    </a>
+  </div>
   <p>© {{ 'now' | date: "%Y" }} {{ site.data.settings.title }}. {{ site.data.settings.footer_text | default: "Сделано с любовью к играм." }}</p>
 </footer>

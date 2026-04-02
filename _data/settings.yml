@@ -1,96 +1,83 @@
-title: "PIXELORCS"
-description: "Независимый онлайн-журнал о видеоиграх: обзоры, аналитика игровой индустрии."
-
-# Категории навигации
+title: PIXELORCS
+description: 'Независимый онлайн-журнал о видеоиграх: обзоры, аналитика игровой индустрии.'
 categories:
-  - name: "Аналитика"
-    slug: "analytics"
-  - name: "Обзоры"
-    slug: "reviews"
-  - name: "Превью"
-    slug: "previews"
-  - name: "Индустрия"
-    slug: "industry"
-  - name: "Гейм-дизайн"
-    slug: "game-design"
-  - name: "Культура"
-    slug: "culture"
-  - name: "Интервью"
-    slug: "interviews"
-  - name: "Гайды"
-    slug: "guides"
-
-# Hero-секция
-hero_tag: "Главное"
-hero_title_1: "Играем."
-hero_title_2: "Анализируем."
-hero_title_3: "Пишем."
-hero_subtitle: "Независимый онлайн-журнал о видеоиграх, гейм-дизайне и культуре вокруг них. Без рекламы, без кликбейта — только честные тексты."
-
-# О проекте
-about_title: "Журнал для тех, кто играет осознанно"
-about_text_1: "PIXELORCS — это независимое медиа о видеоиграх. Мы пишем длинные тексты, потому что верим: игры заслуживают такого же серьёзного разговора, как кино и литература."
-about_text_2: "Никакой рекламы, никаких проплаченных обзоров. Только честный взгляд на индустрию, которую мы любим."
+  - name: Аналитика
+    slug: analytics
+  - name: Обзоры
+    slug: reviews
+  - name: Превью
+    slug: previews
+  - name: Индустрия
+    slug: industry
+  - name: Гейм-дизайн
+    slug: game-design
+  - name: Культура
+    slug: culture
+  - name: Интервью
+    slug: interviews
+  - name: Гайды
+    slug: guides
+hero_tag: Главное
+hero_title_1: Играем.
+hero_title_2: Анализируем.
+hero_title_3: Пишем.
+hero_subtitle: Независимый онлайн-журнал о видеоиграх, гейм-дизайне и культуре вокруг них. Без рекламы, без кликбейта — только честные тексты.
+about_title: Журнал для тех, кто играет осознанно
+about_text_1: 'PIXELORCS — это независимое медиа о видеоиграх. Мы пишем длинные тексты, потому что верим: игры заслуживают такого же серьёзного разговора, как кино и литература.'
+about_text_2: Никакой рекламы, никаких проплаченных обзоров. Только честный взгляд на индустрию, которую мы любим.
 about_stats:
-  - number: "200+"
-    label: "Статей"
-  - number: "15K"
-    label: "Читателей"
-  - number: "0"
-    label: "Рекламы"
-
-# Бегущая строка
-# Формат ссылок: /posts/slug/ (например /posts/retro-consoles/)
+  - number: 200+
+    label: Статей
+  - number: 15K
+    label: Читателей
+  - number: '0'
+    label: Рекламы
 ticker:
-  - text: "GTA VI — новый трейлер"
+  - text: GTA VI — новый трейлер
+    link: ''
     hot: true
-    link: ""
-  - text: "Nintendo Switch 2 — старт продаж"
+  - text: Nintendo Switch 2 — старт продаж
+    link: ''
     hot: false
-    link: ""
-  - text: "Steam побил рекорд онлайна"
+  - text: Steam побил рекорд онлайна
+    link: ''
     hot: true
-    link: ""
-  - text: "Hollow Knight: Silksong — дата релиза"
+  - text: 'Hollow Knight: Silksong — дата релиза'
+    link: ''
     hot: false
-    link: ""
-  - text: "Итоги The Game Awards 2025"
+  - text: Итоги The Game Awards 2025
+    link: ''
     hot: false
-    link: ""
-  - text: "Unreal Engine 6 — анонс"
+  - text: Unreal Engine 6 — анонс
+    link: ''
     hot: false
-    link: ""
-
-# Авторы
 authors:
-  - name: "Михаил Гублин"
-    bio: "Главный редактор, геймдизайнер"
-    avatar: "/assets/uploads/author1.png"
-    twitch: ""
-    youtube: ""
-    vk: ""
-    telegram: ""
-  - name: "Анна Кирова"
-    bio: "Автор обзоров и аналитики"
-    avatar: "/assets/uploads/author2.png"
-    twitch: ""
-    youtube: ""
-    vk: ""
-    telegram: ""
-  - name: "Дмитрий Волков"
-    bio: "Автор материалов об индустрии"
-    avatar: "/assets/uploads/author3.png"
-    twitch: ""
-    youtube: ""
-    vk: ""
-    telegram: ""
-  - name: "Елена Орлова"
-    bio: "Автор гайдов и превью"
-    avatar: "/assets/uploads/author4.png"
-    twitch: ""
-    youtube: ""
-    vk: ""
-    telegram: ""
-
-# Подвал
-footer_text: "Сделано с любовью к играм."
+  - name: Михаил
+    bio: Главный редактор, геймдизайнер
+    avatar: /assets/uploads/author1.png
+    twitch: ''
+    youtube: ''
+    vk: ''
+    telegram: ''
+  - name: Максим
+    bio: Стример и автор обзоров
+    avatar: /assets/uploads/author2.png
+    twitch: ''
+    youtube: ''
+    vk: ''
+    telegram: ''
+  - name: Саша
+    bio: Служивый
+    avatar: /assets/uploads/author3.png
+    twitch: ''
+    youtube: ''
+    vk: ''
+    telegram: ''
+  - name: Артем
+    bio: Автор гайдов и превью
+    avatar: /assets/uploads/author4.png
+    twitch: ''
+    youtube: ''
+    vk: ''
+    telegram: ''
+footer_text: Сделано с любовью к играм.

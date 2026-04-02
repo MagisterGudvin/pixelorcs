@@ -55,22 +55,28 @@ collections:
     view_filters:
       - label: "Аналитика"
         field: category
-        pattern: "Аналитика"
+        pattern: "analytics"
       - label: "Обзоры"
         field: category
-        pattern: "Обзоры"
+        pattern: "reviews"
       - label: "Превью"
         field: category
-        pattern: "Превью"
+        pattern: "previews"
       - label: "Индустрия"
         field: category
-        pattern: "Индустрия"
+        pattern: "industry"
       - label: "Гейм-дизайн"
         field: category
-        pattern: "Гейм-дизайн"
+        pattern: "game-design"
       - label: "Культура"
         field: category
-        pattern: "Культура"
+        pattern: "culture"
+      - label: "Интервью"
+        field: category
+        pattern: "interviews"
+      - label: "Гайды"
+        field: category
+        pattern: "guides"
     summary: "{{title}} — {{category}} · {{year}}-{{month}}-{{day}}"
     fields:
       - label: "Макет"
@@ -96,18 +102,10 @@ collections:
         time_format: false
         format: "YYYY-MM-DD"
 
-      - label: "Категория"
+      - label: "Категория (slug)"
         name: "category"
-        widget: "select"
-        options:
-          - "Аналитика"
-          - "Обзоры"
-          - "Превью"
-          - "Индустрия"
-          - "Гейм-дизайн"
-          - "Культура"
-          - "Интервью"
-          - "Гайды"
+        widget: "string"
+        hint: "Латинский slug категории из Настроек (analytics, reviews, previews, industry, game-design, culture, interviews, guides)"
 
       - label: "Цвет тега"
         name: "tag_color"
@@ -179,9 +177,79 @@ collections:
             name: "title"
             widget: "string"
             default: "PIXELORCS"
+
           - label: "Описание сайта"
             name: "description"
             widget: "text"
+
+          - label: "Категории"
+            name: "categories"
+            widget: "list"
+            label_singular: "Категорию"
+            hint: "Категории отображаются в навигации сайта. Slug используется в URL и при создании статей."
+            fields:
+              - label: "Название (рус)"
+                name: "name"
+                widget: "string"
+                hint: "Отображаемое название (например: Аналитика)"
+              - label: "Slug (лат)"
+                name: "slug"
+                widget: "string"
+                hint: "Латинский идентификатор для URL (например: analytics). Только строчные буквы и дефис."
+
+          - label: "Hero — тег"
+            name: "hero_tag"
+            widget: "string"
+            default: "Главное"
+            hint: "Маленькая плашка над заголовком (например «Главное»)"
+
+          - label: "Hero — строка 1"
+            name: "hero_title_1"
+            widget: "string"
+            default: "Играем."
+
+          - label: "Hero — строка 2 (акцентная)"
+            name: "hero_title_2"
+            widget: "string"
+            default: "Анализируем."
+            hint: "Эта строка выделяется цветом"
+
+          - label: "Hero — строка 3"
+            name: "hero_title_3"
+            widget: "string"
+            default: "Пишем."
+
+          - label: "Hero — подзаголовок"
+            name: "hero_subtitle"
+            widget: "text"
+
+          - label: "О проекте — заголовок"
+            name: "about_title"
+            widget: "string"
+
+          - label: "О проекте — текст (абзац 1)"
+            name: "about_text_1"
+            widget: "text"
+
+          - label: "О проекте — текст (абзац 2)"
+            name: "about_text_2"
+            widget: "text"
+
+          - label: "О проекте — статистика"
+            name: "about_stats"
+            widget: "list"
+            label_singular: "Показатель"
+            max: 4
+            fields:
+              - label: "Число"
+                name: "number"
+                widget: "string"
+                hint: "Например: 200+, 15K, 0"
+              - label: "Подпись"
+                name: "label"
+                widget: "string"
+                hint: "Например: Статей, Читателей, Рекламы"
+
           - label: "Бегущая строка"
             name: "ticker"
             widget: "list"
@@ -190,7 +258,17 @@ collections:
               - label: "Текст"
                 name: "text"
                 widget: "string"
+              - label: "Ссылка"
+                name: "link"
+                widget: "string"
+                required: false
+                hint: "Ссылка на статью: /category-slug/post-slug/ (например /culture/retro-consoles/). Или внешний URL."
               - label: "Горячая новость"
                 name: "hot"
                 widget: "boolean"
                 default: false
+
+          - label: "Текст в подвале"
+            name: "footer_text"
+            widget: "string"
+            default: "Сделано с любовью к играм."

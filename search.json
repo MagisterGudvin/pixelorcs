@@ -3,10 +3,15 @@ layout: null
 ---
 [
   {% for post in site.posts %}
+  {% assign cat_display = post.category %}
+  {% for cat in site.data.settings.categories %}
+    {% if cat.slug == post.category %}{% assign cat_display = cat.name %}{% endif %}
+  {% endfor %}
   {
     "title": {{ post.title | jsonify }},
     "url": "{{ post.url | relative_url }}",
-    "category": {{ post.category | jsonify }},
+    "category": {{ cat_display | jsonify }},
+    "category_slug": {{ post.category | jsonify }},
     "description": {{ post.description | default: "" | jsonify }},
     "content": {{ post.content | strip_html | truncatewords: 80 | jsonify }},
     "date": "{{ post.date | date: '%d.%m.%Y' }}",

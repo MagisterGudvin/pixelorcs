@@ -2,7 +2,7 @@
 layout: post
 title: "Ностальгия как бизнес: бум ретро-консолей"
 description: "Почему индустрия раз за разом продаёт нам прошлое — и почему мы покупаем."
-category: Культура
+category: culture
 tag_color: red
 read_time: 6
 date: 2026-03-05

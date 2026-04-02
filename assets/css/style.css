@@ -258,8 +258,22 @@ body.mobile-open .btn-burger .close-icon { display: block; }
   width: max-content; font-family: var(--font-display);
   font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--gray);
 }
-.ticker span { white-space: nowrap; }
+.ticker span, .ticker a { white-space: nowrap; }
 .ticker .hot { color: var(--accent2); }
+.ticker-link {
+  transition: color .2s;
+  text-decoration: none;
+  color: var(--gray);
+}
+.ticker-link:hover {
+  color: var(--accent);
+}
+.ticker-link.hot {
+  color: var(--accent2);
+}
+.ticker-link.hot:hover {
+  color: var(--white);
+}
 @keyframes scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }

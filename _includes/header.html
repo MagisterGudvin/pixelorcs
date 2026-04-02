@@ -1,18 +1,15 @@
 <header class="site-header">
   <div class="header-inner">
-    <a href="{{ '/' | relative_url }}" class="logo" aria-label="{{ site.title }} — главная">
-      <img src="{{ '/assets/logo.svg' | relative_url }}" alt="" class="logo-icon" width="28" height="28"> PIXELORCS
+    <a href="{{ '/' | relative_url }}" class="logo" aria-label="{{ site.data.settings.title }} — главная">
+      <img src="{{ '/assets/logo.svg' | relative_url }}" alt="" class="logo-icon" width="28" height="28"> {{ site.data.settings.title }}
     </a>
 
-    <!-- Desktop nav: category filters -->
+    <!-- Desktop nav: category filters (dynamic from settings) -->
     <nav class="nav-desktop" aria-label="Навигация по темам">
       <a href="{{ '/' | relative_url }}" data-filter="" class="nav-link active">Все</a>
-      <a href="#articles" data-filter="Аналитика" class="nav-link">Аналитика</a>
-      <a href="#articles" data-filter="Обзоры" class="nav-link">Обзоры</a>
-      <a href="#articles" data-filter="Превью" class="nav-link">Превью</a>
-      <a href="#articles" data-filter="Индустрия" class="nav-link">Индустрия</a>
-      <a href="#articles" data-filter="Гейм-дизайн" class="nav-link">Гейм-дизайн</a>
-      <a href="#articles" data-filter="Культура" class="nav-link">Культура</a>
+      {% for cat in site.data.settings.categories %}
+        <a href="#articles" data-filter="{{ cat.slug }}" class="nav-link">{{ cat.name }}</a>
+      {% endfor %}
     </nav>
 
     <div class="header-actions">
@@ -39,6 +36,13 @@
   </div>
 </div>
 
+<!-- Category slug → name map for JS -->
+<script>
+  var categoryNames = {
+    {% for cat in site.data.settings.categories %}"{{ cat.slug }}": "{{ cat.name }}"{% unless forloop.last %}, {% endunless %}{% endfor %}
+  };
+</script>
+
 <!-- ===== MOBILE MENU ===== -->
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <div class="mobile-menu-inner">
@@ -50,12 +54,9 @@
     <nav class="mobile-nav" aria-label="Мобильное меню">
       <span class="mobile-section">Темы</span>
       <a href="#" class="mobile-link active" data-filter="" onclick="applyFilterMobile(event, '')">Все статьи</a>
-      <a href="#" class="mobile-link" data-filter="Аналитика" onclick="applyFilterMobile(event, 'Аналитика')">Аналитика</a>
-      <a href="#" class="mobile-link" data-filter="Обзоры" onclick="applyFilterMobile(event, 'Обзоры')">Обзоры</a>
-      <a href="#" class="mobile-link" data-filter="Превью" onclick="applyFilterMobile(event, 'Превью')">Превью</a>
-      <a href="#" class="mobile-link" data-filter="Индустрия" onclick="applyFilterMobile(event, 'Индустрия')">Индустрия</a>
-      <a href="#" class="mobile-link" data-filter="Гейм-дизайн" onclick="applyFilterMobile(event, 'Гейм-дизайн')">Гейм-дизайн</a>
-      <a href="#" class="mobile-link" data-filter="Культура" onclick="applyFilterMobile(event, 'Культура')">Культура</a>
+      {% for cat in site.data.settings.categories %}
+        <a href="#" class="mobile-link" data-filter="{{ cat.slug }}" onclick="applyFilterMobile(event, '{{ cat.slug }}')">{{ cat.name }}</a>
+      {% endfor %}
       <span class="mobile-section">Ещё</span>
       <a href="{{ '/' | relative_url }}#about" class="mobile-link" onclick="toggleMobile()">О проекте</a>
     </nav>

@@ -7,11 +7,11 @@ image: /assets/og-image.png
 
 <section class="hero" aria-label="Главный материал">
   <div class="fade-up">
-    <div class="hero-tag">Главное</div>
-    <h1 class="hero-title">Играем.<br><span class="hl">Анализируем.</span><br>Пишем.</h1>
+    <div class="hero-tag">{{ site.data.settings.hero_tag | default: "Главное" }}</div>
+    <h1 class="hero-title">{{ site.data.settings.hero_title_1 | default: "Играем." }}<br><span class="hl">{{ site.data.settings.hero_title_2 | default: "Анализируем." }}</span><br>{{ site.data.settings.hero_title_3 | default: "Пишем." }}</h1>
   </div>
   <div class="fade-up delay-2">
-    <p class="hero-sub">Независимый онлайн-журнал о видеоиграх, гейм-дизайне и культуре вокруг них. Без рекламы, без кликбейта — только честные тексты.</p>
+    <p class="hero-sub">{{ site.data.settings.hero_subtitle | default: "Независимый онлайн-журнал о видеоиграх, гейм-дизайне и культуре вокруг них. Без рекламы, без кликбейта — только честные тексты." }}</p>
   </div>
 </section>
 
@@ -19,10 +19,18 @@ image: /assets/og-image.png
 <div class="ticker-wrap" aria-hidden="true">
   <div class="ticker">
     {% for item in site.data.settings.ticker %}
-      <span{% if item.hot %} class="hot"{% endif %}>{% if item.hot %}● {% endif %}{{ item.text }}</span>
+      {% if item.link and item.link != "" %}
+        <a href="{{ item.link }}" class="ticker-link{% if item.hot %} hot{% endif %}">{% if item.hot %}● {% endif %}{{ item.text }}</a>
+      {% else %}
+        <span{% if item.hot %} class="hot"{% endif %}>{% if item.hot %}● {% endif %}{{ item.text }}</span>
+      {% endif %}
     {% endfor %}
     {% for item in site.data.settings.ticker %}
-      <span{% if item.hot %} class="hot"{% endif %}>{% if item.hot %}● {% endif %}{{ item.text }}</span>
+      {% if item.link and item.link != "" %}
+        <a href="{{ item.link }}" class="ticker-link{% if item.hot %} hot{% endif %}">{% if item.hot %}● {% endif %}{{ item.text }}</a>
+      {% else %}
+        <span{% if item.hot %} class="hot"{% endif %}>{% if item.hot %}● {% endif %}{{ item.text }}</span>
+      {% endif %}
     {% endfor %}
   </div>
 </div>
@@ -48,6 +56,10 @@ image: /assets/og-image.png
 <section class="articles" id="articlesGrid" aria-label="Статьи">
   {% assign sorted = site.posts | sort: 'date' | reverse %}
   {% for post in sorted %}
+  {% assign cat_display = post.category %}
+  {% for cat in site.data.settings.categories %}
+    {% if cat.slug == post.category %}{% assign cat_display = cat.name %}{% endif %}
+  {% endfor %}
   <article class="card {% if forloop.first %}featured{% endif %} fade-up delay-{{ forloop.index }}" data-category="{{ post.category }}">
     <a href="{{ post.url | relative_url }}">
       {% if post.image %}
@@ -56,7 +68,7 @@ image: /assets/og-image.png
         <div class="card-img img-p{{ forloop.index | modulo: 5 | plus: 1 }}"></div>
       {% endif %}
       <div class="card-body">
-        <div class="card-tag {% if post.tag_color == 'red' %}red{% endif %}">{{ post.category }}</div>
+        <div class="card-tag {% if post.tag_color == 'red' %}red{% endif %}">{{ cat_display }}</div>
         <h2 class="card-title">{{ post.title }}</h2>
         <p class="card-excerpt">{{ post.description | default: post.excerpt | strip_html | truncatewords: 25 }}</p>
         <div class="card-meta">
@@ -72,13 +84,13 @@ image: /assets/og-image.png
 <div class="section-label" id="about">О проекте</div>
 <section class="about fade-up delay-2">
   <div>
-    <h2 class="about-title">Журнал для тех, кто играет осознанно</h2>
-    <p>PIXELORCS — это независимое медиа о видеоиграх. Мы пишем длинные тексты, потому что верим: игры заслуживают такого же серьёзного разговора, как кино и литература.</p>
-    <p>Никакой рекламы, никаких проплаченных обзоров. Только честный взгляд на индустрию, которую мы любим.</p>
+    <h2 class="about-title">{{ site.data.settings.about_title | default: "Журнал для тех, кто играет осознанно" }}</h2>
+    <p>{{ site.data.settings.about_text_1 | default: "PIXELORCS — это независимое медиа о видеоиграх. Мы пишем длинные тексты, потому что верим: игры заслуживают такого же серьёзного разговора, как кино и литература." }}</p>
+    <p>{{ site.data.settings.about_text_2 | default: "Никакой рекламы, никаких проплаченных обзоров. Только честный взгляд на индустрию, которую мы любим." }}</p>
   </div>
   <div class="about-stats">
-    <div class="stat"><div class="stat-num">200+</div><div class="stat-label">Статей</div></div>
-    <div class="stat"><div class="stat-num">15K</div><div class="stat-label">Читателей</div></div>
-    <div class="stat"><div class="stat-num">0</div><div class="stat-label">Рекламы</div></div>
+    {% for stat in site.data.settings.about_stats %}
+    <div class="stat"><div class="stat-num">{{ stat.number }}</div><div class="stat-label">{{ stat.label }}</div></div>
+    {% endfor %}
   </div>
 </section>

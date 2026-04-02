@@ -138,7 +138,8 @@ function applyFilter(category) {
 
   /* Update filter status */
   if (category) {
-    label.textContent = category + ' (' + visibleCount + ')';
+    var displayName = (typeof categoryNames !== 'undefined' && categoryNames[category]) ? categoryNames[category] : category;
+    label.textContent = displayName + ' (' + visibleCount + ')';
     status.style.display = '';
   } else {
     status.style.display = 'none';

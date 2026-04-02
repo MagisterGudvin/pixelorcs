@@ -2,7 +2,7 @@
 layout: post
 title: "Как ИИ меняет геймдизайн"
 description: "Процедурная генерация нового уровня: нейросети создают квесты, диалоги и миры."
-category: Индустрия
+category: industry
 read_time: 10
 date: 2026-03-10
 ---

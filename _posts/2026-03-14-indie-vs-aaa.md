@@ -2,7 +2,7 @@
 layout: post
 title: "Почему инди-игры побеждают AAA в 2026 году"
 description: "Малые студии перехватывают инициативу: анализ тренда на цифрах и примерах."
-category: Аналитика
+category: analytics
 read_time: 12
 date: 2026-03-14
 ---

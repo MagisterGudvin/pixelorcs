@@ -2,7 +2,7 @@
 layout: post
 title: "Нарратив через геймплей: уроки Disco Elysium"
 description: "Как ZA/UM доказали, что текст может быть механикой, а не декорацией."
-category: Гейм-дизайн
+category: game-design
 read_time: 7
 date: 2026-03-08
 ---

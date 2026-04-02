@@ -170,6 +170,23 @@ collections:
             name: "description"
             widget: "text"
 
+          - label: "SEO — заголовок страницы"
+            name: "seo_title"
+            widget: "string"
+            hint: "Отображается во вкладке браузера и в поисковой выдаче (например: 4RKS — Статьи об играх)"
+
+          - label: "SEO — описание"
+            name: "seo_description"
+            widget: "text"
+            hint: "Описание для поисковиков и соцсетей (до 160 символов)"
+
+          - label: "SEO — изображение (OG)"
+            name: "seo_image"
+            widget: "image"
+            required: false
+            hint: "Картинка при расшаривании ссылки в соцсетях. Рекомендуемый размер: 1200×630 px"
+            media_folder: "/assets/uploads"
+
           - label: "Категории"
             name: "categories"
             widget: "list"

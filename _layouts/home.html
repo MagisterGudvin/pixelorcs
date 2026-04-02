@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'ru' }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {% assign seo_title = site.data.settings.seo_title | default: site.title %}
+  {% assign seo_desc = site.data.settings.seo_description | default: site.description %}
+  {% assign seo_img = site.data.settings.seo_image %}
+
+  <title>{{ seo_title }}</title>
+  <meta name="description" content="{{ seo_desc }}">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ seo_title }}">
+  <meta property="og:description" content="{{ seo_desc }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ site.url }}{{ site.baseurl }}/">
+  {% if seo_img %}<meta property="og:image" content="{{ seo_img | absolute_url }}">{% endif %}
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="{{ site.data.settings.title | default: site.title }}">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ seo_title }}">
+  <meta name="twitter:description" content="{{ seo_desc }}">
+  {% if seo_img %}<meta name="twitter:image" content="{{ seo_img | absolute_url }}">{% endif %}
+
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  {% feed_meta %}
+
+  <!-- Favicon -->
+  <link rel="icon" href="{{ '/assets/logo.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="32x32">
+  <link rel="apple-touch-icon" href="{{ '/assets/apple-touch-icon.png' | relative_url }}">
+
+  <!-- Sitemap -->
+  <link rel="sitemap" type="application/xml" href="{{ '/sitemap.xml' | relative_url }}">
+
+  <!-- Cyrillic fonts: Oswald (display) + Literata (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <meta name="baseurl" content="{{ site.baseurl }}">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ site.data.settings.title | default: site.title }}",
+    "url": "{{ site.url }}{{ site.baseurl }}/",
+    "description": "{{ seo_desc }}",
+    "inLanguage": "ru"
+  }
+  </script>
+</head>
+<body>
+
+  {% include header.html %}
+
+  <main>{{ content }}</main>
+
+  {% include footer.html %}
+
+  <script src="{{ '/assets/js/app.js' | relative_url }}" defer></script>
+</body>
+</html>

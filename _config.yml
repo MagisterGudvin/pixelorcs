@@ -3,7 +3,7 @@ description: "Независимый онлайн-журнал о видеоиг
 url: "https://MagisterGudvin.github.io"
 baseurl: "/pixelorcs"
 lang: ru
-author: PIXELORCS
+author: 4RKS
 
 permalink: /:categories/:title/
 

@@ -61,5 +61,36 @@ ticker:
     hot: false
     link: ""
 
+# Авторы
+authors:
+  - name: "Михаил Гублин"
+    bio: "Главный редактор, геймдизайнер"
+    avatar: "/assets/uploads/author1.png"
+    twitch: ""
+    youtube: ""
+    vk: ""
+    telegram: ""
+  - name: "Анна Кирова"
+    bio: "Автор обзоров и аналитики"
+    avatar: "/assets/uploads/author2.png"
+    twitch: ""
+    youtube: ""
+    vk: ""
+    telegram: ""
+  - name: "Дмитрий Волков"
+    bio: "Автор материалов об индустрии"
+    avatar: "/assets/uploads/author3.png"
+    twitch: ""
+    youtube: ""
+    vk: ""
+    telegram: ""
+  - name: "Елена Орлова"
+    bio: "Автор гайдов и превью"
+    avatar: "/assets/uploads/author4.png"
+    twitch: ""
+    youtube: ""
+    vk: ""
+    telegram: ""
+
 # Подвал
 footer_text: "Сделано с любовью к играм."

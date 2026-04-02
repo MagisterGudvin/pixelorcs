@@ -339,6 +339,50 @@ body.mobile-open .btn-burger .close-icon { display: block; }
 
 
 /* ============================
+   AUTHORS
+   ============================ */
+.authors {
+  max-width: 1280px; margin: 0 auto; padding: 0 24px 80px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+}
+.author-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 32px 20px; text-align: center;
+  transition: transform .3s, border-color .3s;
+}
+.author-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.author-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  object-fit: cover; margin: 0 auto 16px;
+  border: 2px solid var(--border);
+}
+.author-avatar-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.05); color: var(--gray);
+}
+.author-name {
+  font-family: var(--font-display); font-weight: 700; font-size: 1rem;
+  text-transform: uppercase; letter-spacing: .02em; margin-bottom: 6px;
+}
+.author-bio {
+  color: var(--gray); font-size: .85rem; line-height: 1.4; margin-bottom: 14px;
+}
+.author-socials {
+  display: flex; justify-content: center; gap: 10px;
+}
+.author-social {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--border); color: var(--gray);
+  transition: color .2s, border-color .2s, background .2s;
+}
+.author-social:hover {
+  color: var(--accent); border-color: var(--accent);
+  background: rgba(200,255,46,.06);
+}
+
+
+/* ============================
    ABOUT
    ============================ */
 .about {
@@ -353,7 +397,7 @@ body.mobile-open .btn-burger .close-icon { display: block; }
 .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .stat {
   background: var(--card-bg); border: 1px solid var(--border);
-  border-radius: 8px; padding: 15px; text-align: center;
+  border-radius: 8px; padding: 24px; text-align: center;
 }
 .stat-num { font-family: var(--font-display); font-weight: 700; font-size: 2rem; color: var(--accent); line-height: 1; }
 .stat-label {
@@ -431,6 +475,7 @@ body.mobile-open .btn-burger .close-icon { display: block; }
   .articles { grid-template-columns: 1fr; }
   .card.featured { grid-column: span 1; grid-row: span 1; }
   .about { grid-template-columns: 1fr; }
+  .authors { grid-template-columns: repeat(2, 1fr); }
   .search-overlay { padding-top: 6vh; }
 }
 

@@ -102,10 +102,14 @@ collections:
         time_format: false
         format: "YYYY-MM-DD"
 
-      - label: "Категория (slug)"
+      - label: "Категория"
         name: "category"
-        widget: "string"
-        hint: "Латинский slug категории из Настроек (analytics, reviews, previews, industry, game-design, culture, interviews, guides)"
+        widget: "relation"
+        collection: "settings"
+        file: "general"
+        search_fields: ["categories.*.name"]
+        value_field: "categories.*.slug"
+        display_fields: ["categories.*.name"]
 
       - label: "Цвет тега"
         name: "tag_color"
@@ -244,6 +248,47 @@ collections:
                 name: "hot"
                 widget: "boolean"
                 default: false
+
+          - label: "Авторы"
+            name: "authors"
+            widget: "list"
+            label_singular: "Автора"
+            hint: "Блок авторов на главной странице. Оставьте ссылки пустыми, если их нет — они не будут показаны."
+            fields:
+              - label: "Имя"
+                name: "name"
+                widget: "string"
+              - label: "Описание"
+                name: "bio"
+                widget: "string"
+                required: false
+                hint: "Краткое описание (роль, специализация)"
+              - label: "Аватар"
+                name: "avatar"
+                widget: "image"
+                required: false
+                hint: "Квадратное фото, рекомендуется 200×200 px"
+                media_folder: "/assets/uploads"
+              - label: "Twitch"
+                name: "twitch"
+                widget: "string"
+                required: false
+                hint: "Полная ссылка на канал Twitch"
+              - label: "YouTube"
+                name: "youtube"
+                widget: "string"
+                required: false
+                hint: "Полная ссылка на канал YouTube"
+              - label: "VK"
+                name: "vk"
+                widget: "string"
+                required: false
+                hint: "Полная ссылка на страницу VK"
+              - label: "Telegram"
+                name: "telegram"
+                widget: "string"
+                required: false
+                hint: "Ссылка на Telegram (https://t.me/username)"
 
           - label: "Текст в подвале"
             name: "footer_text"

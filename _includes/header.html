@@ -3,10 +3,61 @@
     <a href="{{ '/' | relative_url }}" class="logo" aria-label="{{ site.title }} — главная">
       <img src="{{ '/assets/logo.svg' | relative_url }}" alt="" class="logo-icon" width="28" height="28"> PIXELORCS
     </a>
-    <nav aria-label="Основная навигация">
-      <a href="{{ '/' | relative_url }}#articles">Статьи</a>
-      <a href="{{ '/' | relative_url }}#industry">Индустрия</a>
-      <a href="{{ '/' | relative_url }}#about">О нас</a>
+
+    <!-- Desktop nav: category filters -->
+    <nav class="nav-desktop" aria-label="Навигация по темам">
+      <a href="{{ '/' | relative_url }}" data-filter="" class="nav-link active">Все</a>
+      <a href="#articles" data-filter="Аналитика" class="nav-link">Аналитика</a>
+      <a href="#articles" data-filter="Обзоры" class="nav-link">Обзоры</a>
+      <a href="#articles" data-filter="Превью" class="nav-link">Превью</a>
+      <a href="#articles" data-filter="Индустрия" class="nav-link">Индустрия</a>
+      <a href="#articles" data-filter="Гейм-дизайн" class="nav-link">Гейм-дизайн</a>
+      <a href="#articles" data-filter="Культура" class="nav-link">Культура</a>
     </nav>
+
+    <div class="header-actions">
+      <button class="btn-icon btn-search" aria-label="Поиск" onclick="toggleSearch()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      </button>
+      <button class="btn-icon btn-burger" aria-label="Меню" onclick="toggleMobile()">
+        <svg class="burger-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg class="close-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
   </div>
 </header>
+
+<!-- ===== SEARCH OVERLAY ===== -->
+<div class="search-overlay" id="searchOverlay" aria-hidden="true">
+  <div class="search-container">
+    <div class="search-bar">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input type="search" id="searchInput" placeholder="Поиск по статьям..." autocomplete="off">
+      <kbd class="search-kbd" onclick="toggleSearch()">ESC</kbd>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- ===== MOBILE MENU ===== -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-inner">
+    <div class="mobile-search-wrap">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input type="search" id="mobileSearchInput" placeholder="Поиск..." autocomplete="off">
+    </div>
+    <div class="mobile-search-results" id="mobileSearchResults"></div>
+    <nav class="mobile-nav" aria-label="Мобильное меню">
+      <span class="mobile-section">Темы</span>
+      <a href="#" class="mobile-link active" data-filter="" onclick="applyFilterMobile(event, '')">Все статьи</a>
+      <a href="#" class="mobile-link" data-filter="Аналитика" onclick="applyFilterMobile(event, 'Аналитика')">Аналитика</a>
+      <a href="#" class="mobile-link" data-filter="Обзоры" onclick="applyFilterMobile(event, 'Обзоры')">Обзоры</a>
+      <a href="#" class="mobile-link" data-filter="Превью" onclick="applyFilterMobile(event, 'Превью')">Превью</a>
+      <a href="#" class="mobile-link" data-filter="Индустрия" onclick="applyFilterMobile(event, 'Индустрия')">Индустрия</a>
+      <a href="#" class="mobile-link" data-filter="Гейм-дизайн" onclick="applyFilterMobile(event, 'Гейм-дизайн')">Гейм-дизайн</a>
+      <a href="#" class="mobile-link" data-filter="Культура" onclick="applyFilterMobile(event, 'Культура')">Культура</a>
+      <span class="mobile-section">Ещё</span>
+      <a href="{{ '/' | relative_url }}#about" class="mobile-link" onclick="toggleMobile()">О проекте</a>
+    </nav>
+  </div>
+</div>

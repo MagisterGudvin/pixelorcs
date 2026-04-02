@@ -1,25 +1,27 @@
 # ============================================================
-# Decap CMS — конфигурация для GitHub Pages
+# Sveltia CMS — конфигурация для GitHub Pages
 # ============================================================
-# ВАЖНО: перед использованием замените значения ниже:
-#   1. repo  → ваш GitHub-репозиторий (username/repo-name)
-#   2. site_domain → ваш домен GitHub Pages
-#   3. base_url → URL вашего OAuth-приложения (см. README)
+# Sveltia CMS — замена Decap CMS с лучшим UI и авторизацией.
+#
+# Перед использованием:
+#   1. repo        → ваш GitHub-репозиторий (username/repo-name)
+#   2. site_url    → URL вашего сайта
+#   3. base_url    → URL вашего OAuth-прокси (см. README)
 # ============================================================
 
 backend:
   name: github
-  repo: MagisterGudvin/pixelorcs        # ← замените на ваш репозиторий
+  repo: yourusername/pixelorcs          # ← замените на ваш репозиторий
   branch: main
-  # base_url: https://sveltia-cms-auth.netlify.app  # бесплатный OAuth-прокси
-  # Если хотите PKCE без внешнего прокси, раскомментируйте:
-  auth_type: pkce
-  app_id: Ov23liXt1NzKgldjAvRK
+  base_url: https://your-worker.workers.dev  # ← URL Cloudflare Worker (см. README)
+
+# Для локальной разработки: запустите `npx @sveltia/cms-proxy` и раскомментируйте:
+# local_backend: true
 
 # Публикация
-publish_mode: editorial_workflow       # черновики → на ревью → публикация
-site_url: https://MagisterGudvin.github.io/pixelorcs
-display_url: https://MagisterGudvin.github.io/pixelorcs
+publish_mode: editorial_workflow        # черновики → на ревью → публикация
+site_url: https://yourusername.github.io/pixelorcs
+display_url: https://yourusername.github.io/pixelorcs
 
 # Медиа
 media_folder: "assets/uploads"
@@ -28,10 +30,10 @@ public_folder: "/assets/uploads"
 # Локализация
 locale: "ru"
 
-# Превью в реальном времени
+# Превью
 show_preview_links: true
 
-# Слаги на транслите
+# Слаги
 slug:
   encoding: "ascii"
   clean_accents: true
@@ -42,7 +44,7 @@ slug:
 # ============================================================
 collections:
 
-  # --- Статьи (посты) ---
+  # --- Статьи ---
   - name: "posts"
     label: "Статьи"
     label_singular: "Статью"
@@ -162,7 +164,7 @@ collections:
             name: "body"
             widget: "markdown"
 
-  # --- Настройки сайта ---
+  # --- Настройки ---
   - name: "settings"
     label: "Настройки"
     delete: false

@@ -15,7 +15,6 @@ image: /assets/og-image.png
   </div>
 </section>
 
-<!-- Бегущая строка — управляется из Decap CMS (Настройки → Бегущая строка) -->
 {% if site.data.settings.ticker.size > 0 %}
 <div class="ticker-wrap" aria-hidden="true">
   <div class="ticker">
@@ -30,10 +29,26 @@ image: /assets/og-image.png
 {% endif %}
 
 <div class="section-label" id="articles">Свежие материалы</div>
-<section class="articles" aria-label="Статьи">
+
+<!-- Filter status bar (shown when filter is active) -->
+<div class="filter-status" id="filterStatus" style="display:none;">
+  <span id="filterLabel"></span>
+  <button class="filter-clear" onclick="clearFilter()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    Сбросить
+  </button>
+</div>
+
+<!-- Empty state (shown when no cards match) -->
+<div class="empty-state" id="emptyState" style="display:none;">
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+  <p>В этой категории пока нет статей</p>
+</div>
+
+<section class="articles" id="articlesGrid" aria-label="Статьи">
   {% assign sorted = site.posts | sort: 'date' | reverse %}
   {% for post in sorted %}
-  <article class="card {% if forloop.first %}featured{% endif %} fade-up delay-{{ forloop.index }}">
+  <article class="card {% if forloop.first %}featured{% endif %} fade-up delay-{{ forloop.index }}" data-category="{{ post.category }}">
     <a href="{{ post.url | relative_url }}">
       {% if post.image %}
         <img class="card-img" src="{{ post.image | relative_url }}" alt="{{ post.title }}" loading="lazy">

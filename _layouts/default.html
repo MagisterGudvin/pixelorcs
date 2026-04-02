@@ -15,6 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <meta name="baseurl" content="{{ site.baseurl }}">
 
   <script type="application/ld+json">
   {
@@ -35,5 +36,6 @@
 
   {% include footer.html %}
 
+  <script src="{{ '/assets/js/app.js' | relative_url }}" defer></script>
 </body>
 </html>

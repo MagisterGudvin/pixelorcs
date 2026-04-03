@@ -1,0 +1,57 @@
+---
+layout: default
+---
+{% assign cat_slug = page.category %}
+{% assign cat_display = cat_slug %}
+{% for cat in site.data.settings.categories %}
+  {% if cat.slug == cat_slug %}{% assign cat_display = cat.name %}{% endif %}
+{% endfor %}
+
+<section class="hero hero-category" aria-label="Категория">
+  <div class="fade-up">
+    <div class="hero-tag">Категория</div>
+    <h1 class="hero-title">{{ cat_display }}</h1>
+  </div>
+</section>
+
+<div class="section-label" id="articles">Статьи в категории «{{ cat_display }}»</div>
+
+<section class="articles" id="articlesGrid" aria-label="Статьи">
+  {% assign sorted = site.posts | sort: 'date' | reverse %}
+  {% assign found = 0 %}
+  {% for post in sorted %}
+    {% if post.category == cat_slug %}
+    {% assign found = found | plus: 1 %}
+    {% assign post_cat_display = post.category %}
+    {% for cat in site.data.settings.categories %}
+      {% if cat.slug == post.category %}{% assign post_cat_display = cat.name %}{% endif %}
+    {% endfor %}
+    <article class="card {% if found == 1 %}featured{% endif %} fade-up delay-{{ found }}" data-category="{{ post.category }}">
+      <a href="{{ post.url | relative_url }}">
+        {% if post.image %}
+          <img class="card-img" src="{{ post.image | relative_url }}" alt="{{ post.title }}" loading="lazy">
+        {% else %}
+          <div class="card-img img-p{{ found | modulo: 5 | plus: 1 }}"></div>
+        {% endif %}
+        <div class="card-body">
+          <div class="card-tag {% if post.tag_color == 'red' %}red{% endif %}">{{ post_cat_display }}</div>
+          <h2 class="card-title">{{ post.title }}</h2>
+          <p class="card-excerpt">{{ post.description | default: post.excerpt | strip_html | truncatewords: 25 }}</p>
+          <div class="card-meta">
+            {% if post.author %}<span>{{ post.author }}</span>{% endif %}
+            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%d.%m.%Y" }}</time>
+            {% if post.read_time %}<span class="read-time">{{ post.read_time }} мин</span>{% endif %}
+          </div>
+        </div>
+      </a>
+    </article>
+    {% endif %}
+  {% endfor %}
+</section>
+
+{% if found == 0 %}
+<div class="empty-state">
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+  <p>В этой категории пока нет статей</p>
+</div>
+{% endif %}

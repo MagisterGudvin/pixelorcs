@@ -1,0 +1,107 @@
+# ============================================================
+# Авто-генерация страниц категорий
+# ============================================================
+# Срабатывает при изменении _data/settings.yml.
+# Создаёт папку + index.html для каждой новой категории,
+# удаляет папки для удалённых категорий.
+# ============================================================
+
+name: Синхронизация категорий
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "_data/settings.yml"
+
+jobs:
+  sync:
+    if: "!contains(github.event.head_commit.message, '[sync-categories]')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Клонирование репозитория
+        uses: actions/checkout@v4
+
+      - name: Синхронизация страниц категорий
+        run: |
+          python3 << 'PYEOF'
+          import yaml, os
+
+          with open("_data/settings.yml", "r", encoding="utf-8") as f:
+              settings = yaml.safe_load(f)
+
+          categories = settings.get("categories", [])
+          site_title = settings.get("title", "4RKS")
+          slugs = set()
+
+          changed = False
+
+          for cat in categories:
+              slug = cat.get("slug", "")
+              name = cat.get("name", "")
+              if not slug or not name:
+                  continue
+              slugs.add(slug)
+
+              index_path = os.path.join(slug, "index.html")
+
+              # Создаём только если папки/файла нет
+              if not os.path.exists(index_path):
+                  os.makedirs(slug, exist_ok=True)
+                  content = f"""---
+          layout: category
+          category: {slug}
+          title: "{name} — {site_title}"
+          description: "Статьи в категории «{name}»"
+          ---
+          """
+                  # Убираем лишние отступы
+                  lines = [line.lstrip() for line in content.strip().split("\n")]
+                  with open(index_path, "w", encoding="utf-8") as f:
+                      f.write("\n".join(lines) + "\n")
+                  print(f"Создана страница: /{slug}/")
+                  changed = True
+
+          # Удаляем страницы для категорий, которых больше нет
+          # Проверяем все папки с index.html, содержащим layout: category
+          for entry in os.listdir("."):
+              if not os.path.isdir(entry):
+                  continue
+              if entry.startswith((".", "_", "assets", "admin", "author", "auth-worker")):
+                  continue
+              index_path = os.path.join(entry, "index.html")
+              if not os.path.exists(index_path):
+                  continue
+              try:
+                  with open(index_path, "r", encoding="utf-8") as f:
+                      content = f.read()
+              except:
+                  continue
+              if "layout: category" in content and entry not in slugs:
+                  os.remove(index_path)
+                  try:
+                      os.rmdir(entry)
+                  except OSError:
+                      pass
+                  print(f"Удалена страница: /{entry}/")
+                  changed = True
+
+          if not changed:
+              print("Категории синхронизированы, изменений нет")
+
+          with open(os.environ["GITHUB_ENV"], "a") as f:
+              f.write(f"changed={'1' if changed else '0'}\n")
+          PYEOF
+
+      - name: Коммит изменений
+        if: env.changed == '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet && exit 0
+          git commit -m "Синхронизация страниц категорий [sync-categories]"
+          git push

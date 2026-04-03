@@ -14,7 +14,7 @@ image: /assets/uploads/20260403-092024.png
 
 Недавно на рынке (особенно в Китае) выстрелил **Lenovo Lecoo Pro 14. У него есть одна фишка, которая делает покупку обычного «игробука» бессмысленной — порт OCuLink**.
 
-![](/assets/uploads/20260403-092024.png)
+![](/assets/uploads/lenovo-lecoo-pro14-2.webp)
 
 ### В чем прикол OCuLink и почему Thunderbolt не катит?
 

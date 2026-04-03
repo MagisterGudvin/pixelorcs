@@ -1,0 +1,101 @@
+# ============================================================
+# Авто-конвертация изображений в WebP
+# ============================================================
+# Срабатывает при пуше в assets/uploads/.
+# Конвертирует jpg/jpeg/png в WebP, обновляет ссылки в файлах,
+# удаляет оригиналы и коммитит результат.
+# ============================================================
+
+name: Конвертация в WebP
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "assets/uploads/**"
+
+jobs:
+  convert:
+    # Не запускать, если коммит сделан этим workflow (избегаем цикла)
+    if: "!contains(github.event.head_commit.message, '[webp-convert]')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Клонирование репозитория
+        uses: actions/checkout@v4
+
+      - name: Установка cwebp
+        run: sudo apt-get update && sudo apt-get install -y webp
+
+      - name: Конвертация изображений
+        run: |
+          cd assets/uploads
+          CONVERTED=0
+
+          for file in *.jpg *.jpeg *.png *.JPG *.JPEG *.PNG; do
+            [ -f "$file" ] || continue
+
+            name="${file%.*}"
+            ext="${file##*.}"
+            webp_file="${name}.webp"
+
+            # Не конвертировать если WebP уже есть
+            if [ -f "$webp_file" ]; then
+              continue
+            fi
+
+            echo "Конвертирую: $file → $webp_file"
+            cwebp -q 85 "$file" -o "$webp_file"
+
+            if [ -f "$webp_file" ]; then
+              CONVERTED=$((CONVERTED + 1))
+            fi
+          done
+
+          echo "converted=$CONVERTED" >> $GITHUB_ENV
+
+      - name: Обновление ссылок в файлах
+        if: env.converted != '0'
+        run: |
+          cd assets/uploads
+
+          for file in *.jpg *.jpeg *.png *.JPG *.JPEG *.PNG; do
+            [ -f "$file" ] || continue
+            name="${file%.*}"
+            webp_file="${name}.webp"
+            [ -f "$webp_file" ] || continue
+
+            echo "Обновляю ссылки: $file → $webp_file"
+
+            # Заменяем ссылки во всех md, yml, html, json файлах
+            find ../../ -type f \( -name "*.md" -o -name "*.yml" -o -name "*.yaml" -o -name "*.html" -o -name "*.json" \) \
+              ! -path "*/_site/*" ! -path "*/.git/*" \
+              -exec sed -i "s|${file}|${webp_file}|g" {} +
+          done
+
+      - name: Удаление оригиналов
+        if: env.converted != '0'
+        run: |
+          cd assets/uploads
+
+          for file in *.jpg *.jpeg *.png *.JPG *.JPEG *.PNG; do
+            [ -f "$file" ] || continue
+            name="${file%.*}"
+            webp_file="${name}.webp"
+            [ -f "$webp_file" ] || continue
+
+            echo "Удаляю оригинал: $file"
+            rm "$file"
+          done
+
+      - name: Коммит изменений
+        if: env.converted != '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet && exit 0
+          git commit -m "Авто-конвертация изображений в WebP [webp-convert]"
+          git push

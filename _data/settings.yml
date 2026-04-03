@@ -18,6 +18,8 @@ categories:
     slug: intervyu
   - name: Творчество
     slug: tvorchestvo
+  - name: Новости
+    slug: novosti
 hero_tag: Главное
 hero_title_1: Играем.
 hero_title_2: Анализируем.

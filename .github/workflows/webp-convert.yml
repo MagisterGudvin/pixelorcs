@@ -16,7 +16,6 @@ on:
 
 jobs:
   convert:
-    # Не запускать, если коммит сделан этим workflow (избегаем цикла)
     if: "!contains(github.event.head_commit.message, '[webp-convert]')"
     runs-on: ubuntu-latest
     permissions:
@@ -29,66 +28,79 @@ jobs:
       - name: Установка cwebp
         run: sudo apt-get update && sudo apt-get install -y webp
 
-      - name: Конвертация изображений
+      - name: Конвертация и замена ссылок
         run: |
-          cd assets/uploads
-          CONVERTED=0
+          python3 << 'PYEOF'
+          import os, glob, re
 
-          for file in *.jpg *.jpeg *.png *.JPG *.JPEG *.PNG; do
-            [ -f "$file" ] || continue
+          upload_dir = "assets/uploads"
+          extensions = (".jpg", ".jpeg", ".png")
+          file_patterns = ("*.md", "*.yml", "*.yaml", "*.html", "*.json")
+          skip_dirs = {"_site", ".git", "node_modules"}
 
-            name="${file%.*}"
-            ext="${file##*.}"
-            webp_file="${name}.webp"
+          # 1. Конвертируем изображения
+          converted = []
+          for ext in extensions:
+              for filepath in glob.glob(os.path.join(upload_dir, f"*{ext}")):
+                  name = os.path.splitext(filepath)[0]
+                  webp_path = name + ".webp"
+                  if os.path.exists(webp_path):
+                      continue
+                  ret = os.system(f'cwebp -q 85 "{filepath}" -o "{webp_path}"')
+                  if ret == 0 and os.path.exists(webp_path):
+                      converted.append((os.path.basename(filepath), os.path.basename(webp_path)))
+                      print(f"Конвертировано: {os.path.basename(filepath)} → {os.path.basename(webp_path)}")
 
-            # Не конвертировать если WebP уже есть
-            if [ -f "$webp_file" ]; then
-              continue
-            fi
+              # Проверяем также верхний регистр
+              for filepath in glob.glob(os.path.join(upload_dir, f"*{ext.upper()}")):
+                  name = os.path.splitext(filepath)[0]
+                  webp_path = name + ".webp"
+                  if os.path.exists(webp_path):
+                      continue
+                  ret = os.system(f'cwebp -q 85 "{filepath}" -o "{webp_path}"')
+                  if ret == 0 and os.path.exists(webp_path):
+                      converted.append((os.path.basename(filepath), os.path.basename(webp_path)))
+                      print(f"Конвертировано: {os.path.basename(filepath)} → {os.path.basename(webp_path)}")
 
-            echo "Конвертирую: $file → $webp_file"
-            cwebp -q 85 "$file" -o "$webp_file"
+          if not converted:
+              print("Нечего конвертировать")
+              # Сигнализируем что ничего не изменилось
+              with open(os.environ["GITHUB_ENV"], "a") as f:
+                  f.write("converted=0\n")
+          else:
+              print(f"\nКонвертировано файлов: {len(converted)}")
+              with open(os.environ["GITHUB_ENV"], "a") as f:
+                  f.write(f"converted={len(converted)}\n")
 
-            if [ -f "$webp_file" ]; then
-              CONVERTED=$((CONVERTED + 1))
-            fi
-          done
+              # 2. Заменяем ссылки в файлах проекта
+              for root, dirs, files in os.walk("."):
+                  dirs[:] = [d for d in dirs if d not in skip_dirs]
+                  for fname in files:
+                      if not any(fname.endswith(p.lstrip("*")) for p in file_patterns):
+                          continue
+                      fpath = os.path.join(root, fname)
+                      try:
+                          with open(fpath, "r", encoding="utf-8") as f:
+                              content = f.read()
+                      except (UnicodeDecodeError, PermissionError):
+                          continue
 
-          echo "converted=$CONVERTED" >> $GITHUB_ENV
+                      original = content
+                      for old_name, new_name in converted:
+                          content = content.replace(old_name, new_name)
 
-      - name: Обновление ссылок в файлах
-        if: env.converted != '0'
-        run: |
-          cd assets/uploads
+                      if content != original:
+                          with open(fpath, "w", encoding="utf-8") as f:
+                              f.write(content)
+                          print(f"Обновлены ссылки: {fpath}")
 
-          for file in *.jpg *.jpeg *.png *.JPG *.JPEG *.PNG; do
-            [ -f "$file" ] || continue
-            name="${file%.*}"
-            webp_file="${name}.webp"
-            [ -f "$webp_file" ] || continue
-
-            echo "Обновляю ссылки: $file → $webp_file"
-
-            # Заменяем ссылки во всех md, yml, html, json файлах
-            find ../../ -type f \( -name "*.md" -o -name "*.yml" -o -name "*.yaml" -o -name "*.html" -o -name "*.json" \) \
-              ! -path "*/_site/*" ! -path "*/.git/*" \
-              -exec sed -i "s|${file}|${webp_file}|g" {} +
-          done
-
-      - name: Удаление оригиналов
-        if: env.converted != '0'
-        run: |
-          cd assets/uploads
-
-          for file in *.jpg *.jpeg *.png *.JPG *.JPEG *.PNG; do
-            [ -f "$file" ] || continue
-            name="${file%.*}"
-            webp_file="${name}.webp"
-            [ -f "$webp_file" ] || continue
-
-            echo "Удаляю оригинал: $file"
-            rm "$file"
-          done
+              # 3. Удаляем оригиналы
+              for old_name, _ in converted:
+                  old_path = os.path.join(upload_dir, old_name)
+                  if os.path.exists(old_path):
+                      os.remove(old_path)
+                      print(f"Удалён: {old_name}")
+          PYEOF
 
       - name: Коммит изменений
         if: env.converted != '0'

@@ -8,7 +8,7 @@ layout: default
 <article class="post-full" itemscope itemtype="https://schema.org/Article">
   <header class="post-hero">
     <div class="post-hero-inner">
-      <span class="card-tag">{{ cat_display }}</span>
+      <a href="{{ '/' | relative_url }}{{ page.category }}/" class="card-tag card-tag-link">{{ cat_display }}</a>
       <h1 class="post-title" itemprop="headline">{{ page.title }}</h1>
       <p class="post-excerpt" itemprop="description">{{ page.description }}</p>
       <div class="post-meta">

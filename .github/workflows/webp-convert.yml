@@ -34,6 +34,7 @@ jobs:
           import os, glob, re
 
           upload_dir = "assets/uploads"
+          skip_files = {"apple-touch-icon.png", "favicon.png", "og-image.png"}
           extensions = (".jpg", ".jpeg", ".png")
           file_patterns = ("*.md", "*.yml", "*.yaml", "*.html", "*.json")
           skip_dirs = {"_site", ".git", "node_modules"}
@@ -41,26 +42,20 @@ jobs:
           # 1. Конвертируем изображения
           converted = []
           for ext in extensions:
-              for filepath in glob.glob(os.path.join(upload_dir, f"*{ext}")):
+              for filepath in glob.glob(os.path.join(upload_dir, f"*{ext}")) + glob.glob(os.path.join(upload_dir, f"*{ext.upper()}")):
+                  basename = os.path.basename(filepath)
+                  if basename in skip_files:
+                      print(f"Пропускаю: {basename}")
+                      continue
                   name = os.path.splitext(filepath)[0]
                   webp_path = name + ".webp"
                   if os.path.exists(webp_path):
                       continue
                   ret = os.system(f'cwebp -q 85 "{filepath}" -o "{webp_path}"')
                   if ret == 0 and os.path.exists(webp_path):
-                      converted.append((os.path.basename(filepath), os.path.basename(webp_path)))
-                      print(f"Конвертировано: {os.path.basename(filepath)} → {os.path.basename(webp_path)}")
-
-              # Проверяем также верхний регистр
-              for filepath in glob.glob(os.path.join(upload_dir, f"*{ext.upper()}")):
-                  name = os.path.splitext(filepath)[0]
-                  webp_path = name + ".webp"
-                  if os.path.exists(webp_path):
-                      continue
-                  ret = os.system(f'cwebp -q 85 "{filepath}" -o "{webp_path}"')
-                  if ret == 0 and os.path.exists(webp_path):
-                      converted.append((os.path.basename(filepath), os.path.basename(webp_path)))
-                      print(f"Конвертировано: {os.path.basename(filepath)} → {os.path.basename(webp_path)}")
+                      # Храним полный путь от uploads/ чтобы не зацепить файлы в других папках
+                      converted.append((f"uploads/{basename}", f"uploads/{os.path.basename(webp_path)}"))
+                      print(f"Конвертировано: {basename} → {os.path.basename(webp_path)}")
 
           if not converted:
               print("Нечего конвертировать")
@@ -95,11 +90,11 @@ jobs:
                           print(f"Обновлены ссылки: {fpath}")
 
               # 3. Удаляем оригиналы
-              for old_name, _ in converted:
-                  old_path = os.path.join(upload_dir, old_name)
+              for old_ref, _ in converted:
+                  old_path = os.path.join("assets", old_ref)
                   if os.path.exists(old_path):
                       os.remove(old_path)
-                      print(f"Удалён: {old_name}")
+                      print(f"Удалён: {old_ref}")
           PYEOF
 
       - name: Коммит изменений

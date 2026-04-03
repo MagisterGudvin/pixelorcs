@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   /* Check if we're on the homepage */
-  var isHome = !!document.getElementById('articlesGrid');
+  var isHome = !!document.getElementById('isHomePage');
 
   /* Desktop nav filter clicks */
   document.querySelectorAll('.nav-desktop .nav-link').forEach(link => {
@@ -179,7 +179,7 @@ function clearFilter() {
 }
 
 function applyFilterMobile(e, category) {
-  var isHome = !!document.getElementById('articlesGrid');
+  var isHome = !!document.getElementById('isHomePage');
   if (isHome) {
     e.preventDefault();
     toggleMobile();

@@ -8,7 +8,7 @@
     <nav class="nav-desktop" aria-label="Навигация по темам">
       <a href="{{ '/' | relative_url }}" data-filter="" class="nav-link active">Все</a>
       {% for cat in site.data.settings.categories %}
-        <a href="#articles" data-filter="{{ cat.slug }}" class="nav-link">{{ cat.name }}</a>
+        <a href="{{ '/' | relative_url }}?filter={{ cat.slug }}#articles" data-filter="{{ cat.slug }}" class="nav-link">{{ cat.name }}</a>
       {% endfor %}
     </nav>
 
@@ -53,9 +53,9 @@
     <div class="mobile-search-results" id="mobileSearchResults"></div>
     <nav class="mobile-nav" aria-label="Мобильное меню">
       <span class="mobile-section">Темы</span>
-      <a href="#" class="mobile-link active" data-filter="" onclick="applyFilterMobile(event, '')">Все статьи</a>
+      <a href="{{ '/' | relative_url }}" class="mobile-link active" data-filter="" onclick="applyFilterMobile(event, '')">Все статьи</a>
       {% for cat in site.data.settings.categories %}
-        <a href="#" class="mobile-link" data-filter="{{ cat.slug }}" onclick="applyFilterMobile(event, '{{ cat.slug }}')">{{ cat.name }}</a>
+        <a href="{{ '/' | relative_url }}?filter={{ cat.slug }}#articles" class="mobile-link" data-filter="{{ cat.slug }}" onclick="applyFilterMobile(event, '{{ cat.slug }}')">{{ cat.name }}</a>
       {% endfor %}
       <span class="mobile-section">Ещё</span>
       <a href="{{ '/' | relative_url }}#about" class="mobile-link" onclick="toggleMobile()">О проекте</a>

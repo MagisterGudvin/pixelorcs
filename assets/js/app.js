@@ -99,16 +99,31 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  /* Check if we're on the homepage */
+  var isHome = !!document.getElementById('articlesGrid');
+
   /* Desktop nav filter clicks */
   document.querySelectorAll('.nav-desktop .nav-link').forEach(link => {
     link.addEventListener('click', function(e) {
-      const filter = this.dataset.filter;
+      var filter = this.dataset.filter;
       if (filter !== undefined) {
-        e.preventDefault();
-        applyFilter(filter);
+        if (isHome) {
+          e.preventDefault();
+          applyFilter(filter);
+        }
+        /* If not on homepage, let the link navigate via href */
       }
     });
   });
+
+  /* Apply filter from URL on homepage load */
+  if (isHome) {
+    var params = new URLSearchParams(window.location.search);
+    var urlFilter = params.get('filter');
+    if (urlFilter) {
+      applyFilter(urlFilter);
+    }
+  }
 });
 
 
@@ -164,14 +179,17 @@ function clearFilter() {
 }
 
 function applyFilterMobile(e, category) {
-  e.preventDefault();
-  toggleMobile();
-  applyFilter(category);
-
-  /* Active state on mobile links */
-  document.querySelectorAll('.mobile-link').forEach(link => {
-    link.classList.toggle('active', (link.dataset.filter || '') === category);
-  });
+  var isHome = !!document.getElementById('articlesGrid');
+  if (isHome) {
+    e.preventDefault();
+    toggleMobile();
+    applyFilter(category);
+    /* Active state on mobile links */
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.classList.toggle('active', (link.dataset.filter || '') === category);
+    });
+  }
+  /* If not on homepage, let the link navigate via href */
 }
 
 

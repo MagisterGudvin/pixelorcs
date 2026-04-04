@@ -201,6 +201,11 @@ collections:
                 name: "slug"
                 widget: "string"
                 hint: "Латинский идентификатор для URL (например: analytics). Только строчные буквы и дефис."
+              - label: "Описание (SEO)"
+                name: "description"
+                widget: "string"
+                required: false
+                hint: "Описание категории для поисковиков (до 160 символов)"
 
           - label: "Hero — тег"
             name: "hero_tag"

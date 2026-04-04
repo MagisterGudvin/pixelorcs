@@ -59,6 +59,7 @@ img { max-width: 100%; display: block; }
 }
 .nav-link:hover { color: var(--white); background: rgba(255,255,255,.06); }
 .nav-link.active { color: var(--black); background: var(--accent); font-weight: 600; }
+.nav-link-extra { border-left: 1px solid var(--border); margin-left: 4px; }
 
 /* Header action buttons */
 .header-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }

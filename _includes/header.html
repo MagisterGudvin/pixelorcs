@@ -10,6 +10,8 @@
       {% for cat in site.data.settings.categories %}
         <a href="{{ '/' | relative_url }}?filter={{ cat.slug }}#articles" data-filter="{{ cat.slug }}" class="nav-link">{{ cat.name }}</a>
       {% endfor %}
+      <a href="{{ '/' | relative_url }}#team" class="nav-link nav-link-extra">Авторы</a>
+      <a href="{{ '/' | relative_url }}#about" class="nav-link nav-link-extra">О проекте</a>
     </nav>
 
     <div class="header-actions">
@@ -58,6 +60,7 @@
         <a href="{{ '/' | relative_url }}?filter={{ cat.slug }}#articles" class="mobile-link" data-filter="{{ cat.slug }}" onclick="applyFilterMobile(event, '{{ cat.slug }}')">{{ cat.name }}</a>
       {% endfor %}
       <span class="mobile-section">Ещё</span>
+      <a href="{{ '/' | relative_url }}#team" class="mobile-link" onclick="toggleMobile()">Авторы</a>
       <a href="{{ '/' | relative_url }}#about" class="mobile-link" onclick="toggleMobile()">О проекте</a>
     </nav>
   </div>

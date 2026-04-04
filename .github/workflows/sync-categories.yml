@@ -42,27 +42,39 @@ jobs:
           for cat in categories:
               slug = cat.get("slug", "")
               name = cat.get("name", "")
+              desc = cat.get("description", "")
               if not slug or not name:
                   continue
               slugs.add(slug)
 
+              if not desc:
+                  desc = f"Статьи в категории «{name}»"
+
               index_path = os.path.join(slug, "index.html")
 
-              # Создаём только если папки/файла нет
+              # Создаём или обновляем если описание изменилось
+              need_write = False
               if not os.path.exists(index_path):
+                  need_write = True
+              else:
+                  with open(index_path, "r", encoding="utf-8") as f:
+                      old = f.read()
+                  if f'description: "{desc}"' not in old:
+                      need_write = True
+
+              if need_write:
                   os.makedirs(slug, exist_ok=True)
                   content = f"""---
           layout: category
           category: {slug}
           title: "{name}"
-          description: "Статьи в категории «{name}»"
+          description: "{desc}"
           ---
           """
-                  # Убираем лишние отступы
                   lines = [line.lstrip() for line in content.strip().split("\n")]
                   with open(index_path, "w", encoding="utf-8") as f:
                       f.write("\n".join(lines) + "\n")
-                  print(f"Создана страница: /{slug}/")
+                  print(f"Обновлена страница: /{slug}/")
                   changed = True
 
           # Удаляем страницы для категорий, которых больше нет

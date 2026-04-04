@@ -163,9 +163,10 @@ function applyFilter(category) {
   /* Empty state */
   empty.style.display = visibleCount === 0 ? '' : 'none';
 
-  /* Active state on desktop nav */
+  /* Active state on desktop nav (only for filter links) */
   document.querySelectorAll('.nav-desktop .nav-link').forEach(link => {
-    link.classList.toggle('active', (link.dataset.filter || '') === category);
+    if (link.dataset.filter === undefined) return;
+    link.classList.toggle('active', link.dataset.filter === category);
   });
 
   /* Scroll to articles */

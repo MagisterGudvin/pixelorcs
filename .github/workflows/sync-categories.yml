@@ -54,7 +54,7 @@ jobs:
                   content = f"""---
           layout: category
           category: {slug}
-          title: "{name} — {site_title}"
+          title: "{name}"
           description: "Статьи в категории «{name}»"
           ---
           """

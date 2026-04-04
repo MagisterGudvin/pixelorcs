@@ -3,14 +3,19 @@ layout: default
 ---
 {% assign cat_slug = page.category %}
 {% assign cat_display = cat_slug %}
+{% assign cat_desc = "" %}
 {% for cat in site.data.settings.categories %}
-  {% if cat.slug == cat_slug %}{% assign cat_display = cat.name %}{% endif %}
+  {% if cat.slug == cat_slug %}
+    {% assign cat_display = cat.name %}
+    {% if cat.description %}{% assign cat_desc = cat.description %}{% endif %}
+  {% endif %}
 {% endfor %}
 
 <section class="hero hero-category" aria-label="Категория">
   <div class="fade-up">
     <div class="hero-tag">Категория</div>
     <h1 class="hero-title">{{ cat_display }}</h1>
+    {% if cat_desc != "" %}<p class="hero-sub">{{ cat_desc }}</p>{% endif %}
   </div>
 </section>
 

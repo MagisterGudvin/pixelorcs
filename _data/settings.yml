@@ -1,54 +1,47 @@
 title: 4RKS
 description: 'Независимый онлайн-журнал о видеоиграх: обзоры, аналитика игровой индустрии.'
 seo_title: 4RKS — Статьи об играх и игровой индустрии
-seo_description: 'Независимый онлайн-журнал о видеоиграх: обзоры, аналитика, интервью с разработчиками и гейм-дизайн.'
+seo_description: 'Независимый онлайн-журнал о видеоиграх: статьи, аналитика, геймдизайн и обзоры техники.'
 seo_image: /assets/og-image.png
 categories:
   - name: Обзоры
     slug: obzori
+    description: ''
   - name: Индустрия
     slug: industriya
+    description: ''
   - name: Железо
     slug: zhelezo
+    description: ''
   - name: Гейм-дизайн
     slug: game-design
+    description: ''
   - name: Аналитика
     slug: analitika
+    description: ''
   - name: Интервью
     slug: intervyu
+    description: ''
   - name: Творчество
     slug: tvorchestvo
+    description: ''
   - name: Новости
     slug: novosti
+    description: ''
 hero_tag: Главное
 hero_title_1: Играем.
 hero_title_2: Анализируем.
 hero_title_3: Пишем.
-hero_subtitle: Независимый онлайн-журнал о видеоиграх, гейм-дизайне и культуре вокруг них. Без рекламы, без кликбейта — только честные тексты.
+hero_subtitle: Независимый онлайн-журнал о видеоиграх и культуре. Честные тексты, без рекламы и кликбейта.
 about_title: Журнал для тех, кто играет осознанно
-about_text_1: '4RKS — это независимое медиа о видеоиграх. Мы пишем длинные тексты, потому что верим: игры заслуживают такого же серьёзного разговора, как кино и литература.'
-about_text_2: Никакой рекламы, никаких проплаченных обзоров. Только честный взгляд на индустрию, которую мы любим.
+about_text_1: '4RKS — это взгляд на видеоигры от четырех независимых авторах. Мы пишем, потому что уверены: игры достойны такого же серьезного обсуждения, как кино и литература.'
+about_text_2: Никаких проплаченных обзоров. Только честный взгляд на индустрию, которую мы любим.
 about_stats:
   - number: '0'
     label: Рекламы
 ticker:
-  - text: GTA VI — новый трейлер
-    link: ''
-    hot: true
-  - text: Nintendo Switch 2 — старт продаж
-    link: ''
-    hot: false
-  - text: Steam побил рекорд онлайна
-    link: ''
-    hot: true
-  - text: 'Hollow Knight: Silksong — дата релиза'
-    link: ''
-    hot: false
-  - text: Итоги The Game Awards 2025
-    link: ''
-    hot: false
-  - text: Unreal Engine 6 — анонс
-    link: ''
+  - text: Игровые ноутбуки — всё?
+    link: /zhelezo/igrovye-noutbuki-vsyo-pochemu-ya-smotryu-v-storonu-oculink-i-lenovo-lecoo-pro-14/
     hot: false
 authors:
   - name: Михаил

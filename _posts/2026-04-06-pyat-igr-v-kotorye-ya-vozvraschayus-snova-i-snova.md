@@ -6,7 +6,7 @@ date: 2026-04-06
 author: Максим
 category: obzori
 tag_color: ''
-read_time: 7
+read_time: 3
 image: /assets/uploads/hNZ2sUCNDcGkbYaqvkLUW7.jpg
 ---
 

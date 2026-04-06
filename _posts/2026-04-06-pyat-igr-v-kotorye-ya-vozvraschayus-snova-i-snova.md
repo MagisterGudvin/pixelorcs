@@ -3,7 +3,7 @@ layout: post
 title: Пять игр, в которые я возвращаюсь снова и снова
 description: 'Мой личный список из 5 игр, в которые я возвращаюсь снова и снова: Ведьмак 3, RDR2, TLOU, Kingdom Come и Cyberpunk 2077'
 date: 2026-04-06
-author: Максим
+author: Максим TIMBERLIKE
 category: timberlike-rekomenduet
 tag_color: ''
 read_time: 3

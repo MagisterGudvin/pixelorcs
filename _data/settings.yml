@@ -19,14 +19,11 @@ categories:
   - name: Аналитика
     slug: analitika
     description: ''
-  - name: Интервью
-    slug: intervyu
-    description: ''
   - name: Творчество
     slug: tvorchestvo
     description: ''
-  - name: Новости
-    slug: novosti
+  - name: TIMBERLIKE рекомендует
+    slug: timberlike-rekomenduet
     description: ''
 hero_tag: Главное
 hero_title_1: Играем.
@@ -53,14 +50,14 @@ ticker:
     link: /zhelezo/igrovye-noutbuki-vsyo-pochemu-ya-smotryu-v-storonu-oculink-i-lenovo-lecoo-pro-14/
     hot: false
 authors:
-  - name: Михаил
+  - name: Михаил Gooblin
     bio: Главный редактор
     avatar: /assets/uploads/tTUdmcb8K8_zyMtWbnxuIzxRaIl6hQUzkdUQH1Ju_9eGbiHeE8QVL2jDuE9Bu6fXdqPDuKIEp_gHp2k836-rsq1Y.webp
     twitch: ''
     youtube: ''
     vk: ''
     telegram: ''
-  - name: Максим
+  - name: Максим TIMBERLIKE
     bio: Стример и автор обзоров
     avatar: /assets/uploads/photo_2026-04-02_21-27-00.webp
     twitch: https://www.twitch.tv/timberlike
@@ -74,7 +71,7 @@ authors:
     youtube: ''
     vk: ''
     telegram: ''
-  - name: Артем
+  - name: Артем WASABI
     bio: Нуб максимального уровня
     avatar: /assets/uploads/photo_2026-04-02_21-28-14.webp
     twitch: https://www.twitch.tv/wasabi_inthedark

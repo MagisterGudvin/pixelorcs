@@ -7,7 +7,7 @@ author: Михаил Gooblin
 category: industriya
 tag_color: red
 read_time: 7
-image: /assets/uploads/steam banned.png
+image: /assets/uploads/steam banned.webp
 ---
 
 Глава ИРИ заявил, что через 3–5 лет Россия сможет "импортозаместить" зарубежные игры. Звучит мощно, но проблема в том, что сама идея сформулирована странно.

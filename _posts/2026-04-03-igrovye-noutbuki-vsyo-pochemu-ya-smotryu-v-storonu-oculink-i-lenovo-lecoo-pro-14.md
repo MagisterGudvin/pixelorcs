@@ -3,7 +3,7 @@ layout: post
 title: Игровые ноутбуки — всё? Почему я смотрю в сторону OCuLink и Lenovo Lecoo Pro 14
 description: 'OCuLink в Lenovo Lecoo Pro 14 против игровых ноутбуков: меньше перегрева, дешевый апгрейд и мощность десктопной видеокарты'
 date: 2026-04-03
-author: Михаил
+author: Михаил Gooblin
 category: zhelezo
 tag_color: red
 read_time: 2

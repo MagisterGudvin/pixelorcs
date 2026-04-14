@@ -7,14 +7,14 @@ author: Михаил Gooblin
 category: zhelezo
 tag_color: red
 read_time: 2
-image: /assets/uploads/lenovo-lecoo-pro14-2.webp
+image: /assets/uploads/img-19d8bff235a-5b74cdf5a7c0dd4a.webp
 ---
 
 Давайте честно: классический игровой ноутбук — это концептуальная ошибка. Мы покупаем железку за 150–200 тысяч, которая через два года превращается в шумную «тыкву», потому что видеокарта в ней распаяна, а охладить её в тонком корпусе физика не позволяет.
 
 Недавно на рынке (особенно в Китае) выстрелил **Lenovo Lecoo Pro 14. У него есть одна фишка, которая делает покупку обычного «игробука» бессмысленной — порт OCuLink**.
 
-![](/assets/uploads/lenovo-lecoo-pro14-2.webp)
+![](/assets/uploads/img-19d8bff235a-5b74cdf5a7c0dd4a.webp)
 
 ### В чем прикол OCuLink и почему Thunderbolt не катит?
 

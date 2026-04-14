@@ -1,0 +1,148 @@
+# ============================================================
+# Ручной инструмент: починка битых ссылок на изображения в md
+# ============================================================
+# Запускается вручную: Actions → "Починка ссылок на изображения" → Run workflow.
+#
+# Сценарии, которые покрывает:
+#   1. В md ссылка /assets/uploads/foo.png|.jpg|.jpeg, файла нет,
+#      но есть /assets/uploads/foo.webp → заменяет расширение.
+#      (Кейс старого webp-convert, который не обновлял md.)
+#
+#   2. В md ссылка на файл, которого нет, но по git-истории
+#      в одном коммите с удалением был добавлен ровно один .webp-файл
+#      в assets/uploads/ → подставляет это новое имя.
+#      (Кейс нового переименования в `img-<ts>-<hash>.webp`.)
+#
+#   3. Битые ссылки, которые не удалось восстановить — просто логируются.
+# ============================================================
+
+name: Починка ссылок на изображения
+
+on:
+  workflow_dispatch:
+
+jobs:
+  relink:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Клонирование репозитория (полная история)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Починка ссылок
+        run: |
+          python3 << 'PYEOF'
+          import os, re, subprocess, urllib.parse
+
+          UPLOADS = "assets/uploads"
+          EXTS = (".jpg", ".jpeg", ".png", ".webp")
+          FILE_PATTERNS = (".md", ".yml", ".yaml", ".html", ".json")
+          SKIP_DIRS = {"_site", ".git", "node_modules", ".github"}
+
+          # Регулярка для ссылок вида /assets/uploads/<name>.<ext>
+          LINK_RE = re.compile(
+              r"(?P<prefix>/assets/uploads/)(?P<name>[^\s\"')\]]+?\.(?:jpg|jpeg|png|webp))",
+              re.IGNORECASE,
+          )
+
+          existing = set()
+          if os.path.isdir(UPLOADS):
+              for f in os.listdir(UPLOADS):
+                  existing.add(f)
+
+          def git(*args):
+              return subprocess.run(
+                  ["git", *args], check=False, capture_output=True, text=True
+              ).stdout
+
+          def find_rename_from_history(old_name):
+              """Ищем коммит, где этот файл удалён, и проверяем, добавился ли
+              ровно один новый .webp в тот же коммит в assets/uploads/."""
+              path = f"{UPLOADS}/{old_name}"
+              # Коммиты, где файл был удалён
+              log = git("log", "--all", "--diff-filter=D", "--format=%H", "--", path).strip().splitlines()
+              for sha in log:
+                  names = git("show", "--name-status", "--format=", sha).splitlines()
+                  added_webp = []
+                  deleted_ok = False
+                  for line in names:
+                      parts = line.split("\t")
+                      if len(parts) < 2:
+                          continue
+                      status, p = parts[0], parts[-1]
+                      if not p.startswith(UPLOADS + "/"):
+                          continue
+                      base = os.path.basename(p)
+                      if status.startswith("D") and base == old_name:
+                          deleted_ok = True
+                      if status.startswith("A") and base.lower().endswith(".webp"):
+                          added_webp.append(base)
+                  if deleted_ok and len(added_webp) == 1 and added_webp[0] in existing:
+                      return added_webp[0]
+              return None
+
+          fixed_total = 0
+          unresolved = []
+
+          for root, dirs, files in os.walk("."):
+              dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+              for fname in files:
+                  if not fname.endswith(FILE_PATTERNS):
+                      continue
+                  fpath = os.path.join(root, fname)
+                  try:
+                      with open(fpath, "r", encoding="utf-8") as f:
+                          content = f.read()
+                  except (UnicodeDecodeError, PermissionError):
+                      continue
+
+                  def replace(match):
+                      global fixed_total
+                      name = match.group("name")
+                      decoded = urllib.parse.unquote(name)
+                      if decoded in existing:
+                          return match.group(0)  # ссылка валидна
+                      # Кейс 1: расширение-замена на .webp
+                      stem, _ext = os.path.splitext(decoded)
+                      candidate = stem + ".webp"
+                      if candidate in existing:
+                          fixed_total += 1
+                          print(f"FIX  {fpath}: {decoded} → {candidate}")
+                          return match.group("prefix") + candidate
+                      # Кейс 2: по git-истории
+                      found = find_rename_from_history(decoded)
+                      if found:
+                          fixed_total += 1
+                          print(f"FIX  {fpath}: {decoded} → {found} (via git history)")
+                          return match.group("prefix") + found
+                      unresolved.append((fpath, decoded))
+                      return match.group(0)
+
+                  new_content = LINK_RE.sub(replace, content)
+                  if new_content != content:
+                      with open(fpath, "w", encoding="utf-8") as f:
+                          f.write(new_content)
+
+          print(f"\nИсправлено ссылок: {fixed_total}")
+          if unresolved:
+              print(f"Не удалось восстановить ({len(unresolved)}):")
+              for fp, name in unresolved:
+                  print(f"  {fp}: {name}")
+
+          with open(os.environ["GITHUB_ENV"], "a") as f:
+              f.write(f"fixed={fixed_total}\n")
+          PYEOF
+
+      - name: Коммит изменений
+        if: env.fixed != '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet && exit 0
+          git commit -m "Починка битых ссылок на изображения [webp-convert]"
+          git push

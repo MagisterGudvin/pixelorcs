@@ -38,27 +38,66 @@ jobs:
       - name: Клонирование репозитория
         uses: actions/checkout@v4
 
+      # Если в uploads есть несконвертированные (.jpg/.jpeg/.png) или "грязные" .webp,
+      # значит webp-convert ещё не отработал. Пропускаем этот запуск — следующий
+      # коммит от [webp-convert] запустит нас снова уже с чистым состоянием.
+      - name: Проверка готовности uploads
+        id: preflight
+        run: |
+          set -e
+          pending=0
+          shopt -s nullglob nocaseglob
+          for f in assets/uploads/*.jpg assets/uploads/*.jpeg assets/uploads/*.png; do
+            name=$(basename "$f")
+            case "$name" in
+              apple-touch-icon.png|favicon.png|og-image.png) ;;
+              *) pending=1; echo "pending: $name" ;;
+            esac
+          done
+          for f in assets/uploads/*.webp; do
+            name=$(basename "$f")
+            if [[ ! "$name" =~ ^img-[a-z0-9]+-[a-f0-9]{16}\.webp$ ]]; then
+              pending=1
+              echo "pending rename: $name"
+            fi
+          done
+          echo "pending=$pending" >> "$GITHUB_OUTPUT"
+          if [ "$pending" = "1" ]; then
+            echo "::notice::Найдены необработанные изображения — ждём webp-convert, деплой пропущен."
+          fi
+
       - name: Установка Ruby
+        if: steps.preflight.outputs.pending != '1'
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"
           bundler-cache: true  # кэширует gem'ы между запусками
 
       - name: Настройка Pages
+        if: steps.preflight.outputs.pending != '1'
         id: pages
         uses: actions/configure-pages@v5
 
       - name: Сборка Jekyll
+        if: steps.preflight.outputs.pending != '1'
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
 
       - name: Загрузка артефакта
+        if: steps.preflight.outputs.pending != '1'
         uses: actions/upload-pages-artifact@v3
+
+      - name: Проброс pending в job output
+        id: pending
+        run: echo "pending=${{ steps.preflight.outputs.pending }}" >> "$GITHUB_OUTPUT"
+
+    outputs:
+      pending: ${{ steps.pending.outputs.pending }}
 
   # ── Деплой ──
   deploy:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.build.outputs.pending != '1'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

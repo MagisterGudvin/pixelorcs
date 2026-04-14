@@ -1,9 +1,12 @@
 # ============================================================
-# Авто-конвертация изображений в WebP
+# Авто-конвертация изображений в WebP + переименование
 # ============================================================
 # Срабатывает при пуше в assets/uploads/.
-# Конвертирует jpg/jpeg/png в WebP, обновляет ссылки в файлах,
-# удаляет оригиналы и коммитит результат.
+# - Конвертирует jpg/jpeg/png в WebP.
+# - Переименовывает .webp с "сырым" именем (из Telegram, CMS и т.п.)
+#   в уникальное `img-<ts>-<sha1>.webp`.
+# - Обновляет ссылки во всех md/yml/html/json (учитывая URL-encoding).
+# - Удаляет оригиналы и коммитит.
 # ============================================================
 
 name: Конвертация в WebP
@@ -24,6 +27,9 @@ jobs:
     steps:
       - name: Клонирование репозитория
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Установка cwebp
         run: sudo apt-get update && sudo apt-get install -y webp
@@ -31,70 +37,119 @@ jobs:
       - name: Конвертация и замена ссылок
         run: |
           python3 << 'PYEOF'
-          import os, glob, re
+          import os, glob, re, hashlib, time, urllib.parse, subprocess
 
           upload_dir = "assets/uploads"
           skip_files = {"apple-touch-icon.png", "favicon.png", "og-image.png"}
-          extensions = (".jpg", ".jpeg", ".png")
-          file_patterns = ("*.md", "*.yml", "*.yaml", "*.html", "*.json")
-          skip_dirs = {"_site", ".git", "node_modules"}
+          convert_exts = (".jpg", ".jpeg", ".png")
+          # .webp тоже обрабатываем — переименовываем "сырые" имена на уникальные.
+          rename_exts = (".webp",)
+          file_patterns = (".md", ".yml", ".yaml", ".html", ".json")
+          skip_dirs = {"_site", ".git", "node_modules", ".github"}
 
-          # 1. Конвертируем изображения
-          converted = []
-          for ext in extensions:
-              for filepath in glob.glob(os.path.join(upload_dir, f"*{ext}")) + glob.glob(os.path.join(upload_dir, f"*{ext.upper()}")):
-                  basename = os.path.basename(filepath)
-                  if basename in skip_files:
-                      print(f"Пропускаю: {basename}")
-                      continue
-                  name = os.path.splitext(filepath)[0]
-                  webp_path = name + ".webp"
-                  if os.path.exists(webp_path):
-                      continue
-                  ret = os.system(f'cwebp -q 85 "{filepath}" -o "{webp_path}"')
-                  if ret == 0 and os.path.exists(webp_path):
-                      # Храним полный путь от uploads/ чтобы не зацепить файлы в других папках
-                      converted.append((f"uploads/{basename}", f"uploads/{os.path.basename(webp_path)}"))
-                      print(f"Конвертировано: {basename} → {os.path.basename(webp_path)}")
+          # Файл считается "уже чистым", если совпадает с нашим шаблоном.
+          clean_name_re = re.compile(r"^img-[a-z0-9]+-[a-f0-9]{16}\.webp$")
 
-          if not converted:
-              print("Нечего конвертировать")
-              # Сигнализируем что ничего не изменилось
+          def unique_name(src_path):
+              h = hashlib.sha1()
+              with open(src_path, "rb") as f:
+                  while True:
+                      chunk = f.read(65536)
+                      if not chunk:
+                          break
+                      h.update(chunk)
+              ts = format(int(time.time() * 1000), "x")
+              return f"img-{ts}-{h.hexdigest()[:16]}.webp"
+
+          renames = []  # [(old_basename, new_basename)]
+
+          # 1. Конвертируем jpg/jpeg/png → уникальное webp.
+          for entry in sorted(os.listdir(upload_dir)):
+              path = os.path.join(upload_dir, entry)
+              if not os.path.isfile(path):
+                  continue
+              if entry in skip_files:
+                  continue
+              lower = entry.lower()
+              if lower.endswith(convert_exts):
+                  new_name = unique_name(path)
+                  new_path = os.path.join(upload_dir, new_name)
+                  ret = os.system(f'cwebp -q 85 -quiet "{path}" -o "{new_path}"')
+                  if ret == 0 and os.path.exists(new_path):
+                      renames.append((entry, new_name))
+                      print(f"Конвертировано: {entry} → {new_name}")
+                  else:
+                      print(f"ОШИБКА cwebp: {entry}")
+              elif lower.endswith(rename_exts):
+                  if clean_name_re.match(entry):
+                      continue  # уже уникальное
+                  new_name = unique_name(path)
+                  new_path = os.path.join(upload_dir, new_name)
+                  os.rename(path, new_path)
+                  renames.append((entry, new_name))
+                  print(f"Переименовано: {entry} → {new_name}")
+
+          if not renames:
+              print("Нечего конвертировать/переименовывать.")
               with open(os.environ["GITHUB_ENV"], "a") as f:
                   f.write("converted=0\n")
-          else:
-              print(f"\nКонвертировано файлов: {len(converted)}")
-              with open(os.environ["GITHUB_ENV"], "a") as f:
-                  f.write(f"converted={len(converted)}\n")
+              raise SystemExit(0)
 
-              # 2. Заменяем ссылки в файлах проекта
-              for root, dirs, files in os.walk("."):
-                  dirs[:] = [d for d in dirs if d not in skip_dirs]
-                  for fname in files:
-                      if not any(fname.endswith(p.lstrip("*")) for p in file_patterns):
-                          continue
-                      fpath = os.path.join(root, fname)
-                      try:
-                          with open(fpath, "r", encoding="utf-8") as f:
-                              content = f.read()
-                      except (UnicodeDecodeError, PermissionError):
-                          continue
+          with open(os.environ["GITHUB_ENV"], "a") as f:
+              f.write(f"converted={len(renames)}\n")
 
-                      original = content
-                      for old_name, new_name in converted:
-                          content = content.replace(old_name, new_name)
+          # 2. Замена ссылок. Строим список вариантов написания старого имени:
+          #    a) как есть
+          #    b) URL-encoded (пробелы как %20 и т.д.)
+          #    c) URL-encoded с quote_plus (пробелы как +)
+          def variants(name):
+              seen = set()
+              out = []
+              for v in (name, urllib.parse.quote(name), urllib.parse.quote_plus(name)):
+                  if v not in seen:
+                      seen.add(v)
+                      out.append(v)
+              return out
 
-                      if content != original:
-                          with open(fpath, "w", encoding="utf-8") as f:
-                              f.write(content)
-                          print(f"Обновлены ссылки: {fpath}")
+          replacements = []  # [(pattern_str, new_name)]
+          for old, new in renames:
+              for v_old in variants(old):
+                  # Используем regex с \b-подобной защитой: предыдущий символ не должен
+                  # быть буквой/цифрой (чтобы photo_1.png не матчил photo_12.png).
+                  pat = r"(?<![A-Za-z0-9_])" + re.escape(v_old)
+                  replacements.append((pat, new))
 
-              # 3. Удаляем оригиналы
-              for old_ref, _ in converted:
-                  old_path = os.path.join("assets", old_ref)
-                  if os.path.exists(old_path):
-                      os.remove(old_path)
-                      print(f"Удалён: {old_ref}")
+          touched = []
+          for root, dirs, files in os.walk("."):
+              dirs[:] = [d for d in dirs if d not in skip_dirs]
+              for fname in files:
+                  if not fname.endswith(file_patterns):
+                      continue
+                  fpath = os.path.join(root, fname)
+                  try:
+                      with open(fpath, "r", encoding="utf-8") as f:
+                          content = f.read()
+                  except (UnicodeDecodeError, PermissionError):
+                      continue
+                  original = content
+                  for pat, new in replacements:
+                      content = re.sub(pat, new, content)
+                  if content != original:
+                      with open(fpath, "w", encoding="utf-8") as f:
+                          f.write(content)
+                      touched.append(fpath)
+
+          print(f"Обновлены ссылки в {len(touched)} файле(ах).")
+          for p in touched:
+              print(f"  {p}")
+
+          # 3. Удаляем оригиналы (только те, что успешно сконвертированы/переименованы
+          #    и которых больше нет под старым именем — переименование уже обошлось).
+          for old, _new in renames:
+              old_path = os.path.join(upload_dir, old)
+              if os.path.exists(old_path):
+                  os.remove(old_path)
+                  print(f"Удалён: {old}")
           PYEOF
 
       - name: Коммит изменений

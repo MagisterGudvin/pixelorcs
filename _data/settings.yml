@@ -1,4 +1,3 @@
-ticker_enabled: true
 title: 4RKS
 description: 'Независимый онлайн-журнал о видеоиграх: обзоры, аналитика игровой индустрии.'
 seo_title: 4RKS — Статьи об играх и игровой индустрии
@@ -34,6 +33,7 @@ about_text_2: Никаких проплаченных обзоров. Тольк
 about_stats:
   - number: '0'
     label: Рекламы
+ticker_enabled: false
 ticker:
   - text: Игровые ноутбуки — всё?
     link: /zhelezo/igrovye-noutbuki-vsyo-pochemu-ya-smotryu-v-storonu-oculink-i-lenovo-lecoo-pro-14/

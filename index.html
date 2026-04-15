@@ -13,7 +13,9 @@ layout: home
   </div>
 </section>
 
-{% if site.data.settings.ticker.size > 0 %}
+{% assign ticker_on = site.data.settings.ticker_enabled %}
+{% if ticker_on == nil %}{% assign ticker_on = true %}{% endif %}
+{% if ticker_on and site.data.settings.ticker.size > 0 %}
 <div class="ticker-wrap" aria-hidden="true">
   <div class="ticker">
     {% for item in site.data.settings.ticker %}

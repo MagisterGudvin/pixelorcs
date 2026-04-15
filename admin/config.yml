@@ -260,6 +260,12 @@ collections:
                 widget: "string"
                 hint: "Например: Статей, Читателей, Рекламы"
 
+          - label: "Бегущая строка — включена"
+            name: "ticker_enabled"
+            widget: "boolean"
+            default: true
+            hint: "Снимите галочку, чтобы полностью скрыть бегущую строку на сайте (без удаления списка новостей)."
+
           - label: "Бегущая строка"
             name: "ticker"
             widget: "list"
